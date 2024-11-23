@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="PurchaseItemsAPid" prefHeight="709.0" prefWidth="1045.0" style="-fx-background-color: E7E4D1;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.rms.controller.PurchaseItemsController">
+   <children>
+      <Label layoutX="401.0" layoutY="33.0" prefHeight="74.0" prefWidth="246.0" style="-fx-background-color: E5C08A;" text="      Purchase Items" textFill="#080808">
+         <font>
+            <Font name="Franklin Gothic Medium" size="24.0" />
+         </font>
+      </Label>
+      <Group layoutX="72.0" layoutY="126.0">
+         <children>
+            <Label layoutX="-6.0" layoutY="1.0" prefHeight="19.0" prefWidth="168.0" text="Purchase Item ID ">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="-6.0" layoutY="62.0" text="Inventory Item ID">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtPurchaseItemId" layoutX="197.0" prefHeight="28.0" prefWidth="187.0" promptText="Purchase Item ID" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;" />
+            <TextField fx:id="txtInventoryItemId" layoutX="198.0" layoutY="54.0" prefHeight="23.0" prefWidth="189.0" promptText="Inventory Item ID" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;" />
+            <TextField fx:id="txtPurchaseId" layoutX="194.0" layoutY="106.0" prefHeight="15.0" prefWidth="196.0" promptText="Purchase ID" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;" />
+            <TextField fx:id="txtStatus" layoutX="645.0" layoutY="13.0" prefHeight="24.0" prefWidth="211.0" promptText="Status" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;" />
+            <Label layoutX="517.0" layoutY="15.0" prefHeight="27.0" prefWidth="74.0" text="Status">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="517.0" layoutY="62.0" prefHeight="25.0" prefWidth="54.0" text="Price">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtPrice" layoutX="647.0" layoutY="62.0" prefHeight="24.0" prefWidth="208.0" promptText="Price" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;" />
+            <Label layoutX="-6.0" layoutY="124.0" text="Purchase ID">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="517.0" layoutY="120.0" prefHeight="20.0" prefWidth="74.0" text="Quantity">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtQuantity" layoutX="647.0" layoutY="110.0" prefHeight="24.0" prefWidth="208.0" promptText="Quantity" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;" />
+         </children>
+      </Group>
+      <Group layoutX="86.0" layoutY="317.0">
+         <children>
+            <Button fx:id="generatereportid" mnemonicParsing="false" onAction="#generatereportOA" style="-fx-background-color: #778ca3;" text="Generate Report">
+               <font>
+                  <Font name="System Bold Italic" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="resetid" layoutX="187.0" mnemonicParsing="false" onAction="#ResetOA" prefHeight="24.0" prefWidth="74.0" style="-fx-background-color: #ff9b9b;" text="Reset">
+               <font>
+                  <Font name="System Bold Italic" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="Deleteid" layoutX="366.0" layoutY="-1.0" mnemonicParsing="false" onAction="#DeleteOA" prefHeight="26.0" prefWidth="82.0" style="-fx-background-color: #ec6666;" text="Delete">
+               <font>
+                  <Font name="System Bold Italic" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="Saveid" layoutX="731.0" layoutY="-1.0" mnemonicParsing="false" onAction="#SaveOA" prefHeight="26.0" prefWidth="82.0" style="-fx-background-color: #26de81;" text="Save">
+               <font>
+                  <Font name="System Bold Italic" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="updateid" layoutX="548.0" mnemonicParsing="false" onAction="#updateOA" prefHeight="26.0" prefWidth="82.0" style="-fx-background-color: #66c1ea;" text="Update">
+               <font>
+                  <Font name="System Bold Italic" size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </Group>
+      <TableView fx:id="tblPurchaseItems" layoutX="86.0" layoutY="386.0" onMouseClicked="#OnClickTable" prefHeight="199.0" prefWidth="874.0">
+         <columns>
+            <TableColumn fx:id="colPurchaseItemID" prefWidth="152.80001831054688" text="Purchase Item ID" />
+            <TableColumn fx:id="colInventoryItemIID" prefWidth="127.99996948242188" text="Inventory Item ID" />
+            <TableColumn fx:id="colPurchaseID" prefWidth="152.79995727539062" text="Purchase ID" />
+            <TableColumn fx:id="colPrice" prefWidth="159.4666748046875" text="Price" />
+            <TableColumn fx:id="colQuantity" prefWidth="135.2000732421875" text="Quantity" />
+            <TableColumn fx:id="colStatus" prefWidth="144.0" text="Status" />
+         </columns>
+      </TableView>
+      <Button fx:id="btnBack" layoutX="773.0" layoutY="616.0" mnemonicParsing="false" onAction="#BackOA" prefHeight="45.0" prefWidth="131.0" style="-fx-background-color: #bdc3c7; -fx-background-radius: 20;" text="BACK" textFill="#7f8955">
+         <font>
+            <Font name="Nirmala UI Bold" size="18.0" />
+         </font>
+      </Button>
+      <TextField fx:id="txtSearchPurchaseItemId" layoutX="66.0" layoutY="79.0" prefHeight="28.0" prefWidth="187.0" promptText="Purchase Item ID" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;" />
+      <Button fx:id="search" layoutX="265.0" layoutY="78.0" mnemonicParsing="false" onAction="#searchOnAction" prefHeight="27.0" prefWidth="79.0" style="-fx-background-color: #3dcfc2;" text="search">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

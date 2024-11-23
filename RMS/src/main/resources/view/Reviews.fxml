@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="ReviewsAPid" prefHeight="744.0" prefWidth="1011.0" style="-fx-background-color: E7E4D1;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.rms.controller.ReviewsController">
+   <children>
+      <Label layoutX="404.0" layoutY="23.0" prefHeight="74.0" prefWidth="246.0" style="-fx-background-color: E5C08A;" text="            Reviews" textFill="#080808">
+         <font>
+            <Font name="Franklin Gothic Medium" size="24.0" />
+         </font>
+      </Label>
+      <Group layoutX="83.0" layoutY="135.0">
+         <children>
+            <Label prefHeight="30.0" prefWidth="126.0" text="Review ID">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtReviewID" layoutX="140.0" prefHeight="22.0" prefWidth="209.0" promptText="Revieew ID" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;" />
+            <TextField fx:id="txtCustomerID" layoutX="141.0" layoutY="47.0" prefHeight="19.0" prefWidth="207.0" promptText="Customer ID" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;" />
+            <TextField fx:id="txtRating" layoutX="607.0" layoutY="5.0" prefHeight="24.0" prefWidth="211.0" promptText="*****************" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;" />
+            <Label layoutX="447.0" layoutY="2.0" prefHeight="34.0" prefWidth="112.0" text="Rating">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="447.0" layoutY="64.0" prefHeight="28.0" prefWidth="118.0" text="Comments">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtComments" layoutX="608.0" layoutY="61.0" prefHeight="24.0" prefWidth="208.0" promptText="Comments" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;" />
+            <Label layoutX="-2.0" layoutY="51.0" prefHeight="32.0" prefWidth="125.0" text="Customer ID">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="-2.0" layoutY="101.0" prefHeight="28.0" prefWidth="131.0" text="Menu Item ID">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtMenuItemID" layoutX="141.0" layoutY="101.0" prefHeight="19.0" prefWidth="207.0" promptText="Menu Item ID" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;" />
+            <TextField fx:id="txtReviewDate" layoutX="607.0" layoutY="114.0" prefHeight="24.0" prefWidth="208.0" promptText="DD-MM-YYYY" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;" />
+            <Label layoutX="447.0" layoutY="115.0" prefHeight="25.0" prefWidth="147.0" text="Review Date">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </Group>
+      <Group layoutX="83.0" layoutY="327.0">
+         <children>
+            <Button fx:id="generatereportid" layoutX="-13.0" layoutY="-1.0" mnemonicParsing="false" onAction="#generatereportOA" style="-fx-background-color: #778ca3;" text="Generate Report">
+               <font>
+                  <Font name="System Bold Italic" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="resetid" layoutX="199.0" mnemonicParsing="false" onAction="#ResetOA" prefHeight="24.0" prefWidth="74.0" style="-fx-background-color: #ff9b9b;" text="Reset">
+               <font>
+                  <Font name="System Bold Italic" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="Deleteid" layoutX="366.0" layoutY="-1.0" mnemonicParsing="false" onAction="#DeleteOA" prefHeight="26.0" prefWidth="82.0" style="-fx-background-color: #ec6666;" text="Delete">
+               <font>
+                  <Font name="System Bold Italic" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="Saveid" layoutX="731.0" layoutY="-1.0" mnemonicParsing="false" onAction="#SaveOA" prefHeight="26.0" prefWidth="82.0" style="-fx-background-color: #26de81;" text="Save">
+               <font>
+                  <Font name="System Bold Italic" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="updateid" layoutX="548.0" mnemonicParsing="false" onAction="#updateOA" prefHeight="26.0" prefWidth="82.0" style="-fx-background-color: #66c1ea;" text="Update">
+               <font>
+                  <Font name="System Bold Italic" size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </Group>
+      <TableView fx:id="tblReview" layoutX="38.0" layoutY="382.0" onMouseClicked="#OnClickTable" prefHeight="202.0" prefWidth="903.0">
+         <columns>
+            <TableColumn fx:id="colReviewID" prefWidth="156.79996490478516" text="Review ID" />
+            <TableColumn fx:id="colCustomerID" prefWidth="140.00003051757812" text="Customer ID" />
+            <TableColumn fx:id="colMenuItemID" prefWidth="159.199951171875" text="Menu Item ID" />
+            <TableColumn fx:id="colRating" prefWidth="160.800048828125" text="Rating" />
+            <TableColumn fx:id="colComments" prefWidth="153.60003662109375" text="Comments" />
+            <TableColumn fx:id="colReviewDate" prefWidth="135.199951171875" text="Reviw Date" />
+         </columns>
+      </TableView>
+      <Button fx:id="btnBack" layoutX="809.0" layoutY="609.0" mnemonicParsing="false" onAction="#BackOA" prefHeight="45.0" prefWidth="131.0" style="-fx-background-color: #bdc3c7; -fx-background-radius: 20;" text="BACK" textFill="#7f8955">
+         <font>
+            <Font name="Nirmala UI Bold" size="18.0" />
+         </font>
+      </Button>
+      <TextField fx:id="txtSearchReviewID" layoutX="52.0" layoutY="96.0" prefHeight="22.0" prefWidth="209.0" promptText="Revieew ID" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;" />
+      <Button fx:id="search" layoutX="269.0" layoutY="96.0" mnemonicParsing="false" onAction="#searchOnAction" prefHeight="15.0" prefWidth="71.0" style="-fx-background-color: #3dcfc2;" text="search">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

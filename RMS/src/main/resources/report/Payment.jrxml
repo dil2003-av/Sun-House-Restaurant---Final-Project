@@ -1,0 +1,111 @@
+<!-- Created with Jaspersoft Studio version 7.0.0.final using JasperReports Library version 7.0.0-b478feaa9aab4375eba71de77b4ca138ad2f62aa  -->
+<jasperReport name="Payment" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="699b4ae5-de1e-4e84-a397-f5da2e9d5897">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter (5)"/>
+	<query language="SQL"><![CDATA[select * from payments;
+]]></query>
+	<field name="PaymentID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PaymentID"/>
+		<property name="com.jaspersoft.studio.field.label" value="PaymentID"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
+	</field>
+	<field name="PaymentMethod" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PaymentMethod"/>
+		<property name="com.jaspersoft.studio.field.label" value="PaymentMethod"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
+	</field>
+	<field name="Amount" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="Amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="Amount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
+	</field>
+	<field name="PaymentDate" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="PaymentDate"/>
+		<property name="com.jaspersoft.studio.field.label" value="PaymentDate"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
+	</field>
+	<group name="PaymentID">
+		<expression><![CDATA[$F{PaymentID}]]></expression>
+	</group>
+	<group name="PaymentMethod">
+		<expression><![CDATA[$F{PaymentMethod}]]></expression>
+	</group>
+	<group name="Amount">
+		<expression><![CDATA[$F{Amount}]]></expression>
+	</group>
+	<group name="PaymentDate">
+		<expression><![CDATA[$F{PaymentDate}]]></expression>
+	</group>
+	<background splitType="Stretch"/>
+	<title height="79" splitType="Stretch">
+		<element kind="staticText" uuid="039466f0-ef99-4477-9593-3570dcec2bf2" x="166" y="24" width="223" height="30" fontSize="20.0" hTextAlign="Center">
+			<text><![CDATA[Payment Report]]></text>
+		</element>
+	</title>
+	<pageHeader height="35" splitType="Stretch"/>
+	<columnHeader height="61" splitType="Stretch">
+		<element kind="staticText" uuid="24e05e30-8ba3-436d-93ce-f509eef0c46e" x="0" y="0" width="141" height="30" fontSize="12.0" hTextAlign="Center">
+			<text><![CDATA[PaymentID ]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="da036667-6208-47ba-93e7-fee1b8c4c7cd"/>
+			<box>
+				<pen lineWidth="1.0" lineStyle="Solid"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="7f32da5b-a59e-4cfc-b95d-5be284cfcf9b" x="141" y="0" width="138" height="30" fontSize="12.0" hTextAlign="Center">
+			<text><![CDATA[Payment Method]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cb1c49e9-b7a0-46d0-abe3-0915775a8bda"/>
+			<box>
+				<pen lineWidth="1.0" lineStyle="Solid"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="5d2ff13c-f5ed-46cc-9ae6-9b767ffac104" x="279" y="0" width="138" height="30" fontSize="12.0" hTextAlign="Center">
+			<text><![CDATA[Amount]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f27254c6-24f9-4db2-8a99-a1a3e158e99d"/>
+			<box>
+				<pen lineWidth="1.0" lineStyle="Solid"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="21ef9529-6a88-4352-af85-36f34ab91047" x="417" y="0" width="138" height="30" fontSize="12.0" hTextAlign="Center">
+			<text><![CDATA[Payment Date]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7aaa6553-14b1-4fe7-8c42-c3c4c306381c"/>
+			<box>
+				<pen lineWidth="1.0" lineStyle="Solid"/>
+			</box>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<element kind="textField" uuid="cebef56b-56c8-425c-8a91-d4dc1fde3c6a" x="0" y="0" width="141" height="30" hTextAlign="Center">
+				<expression><![CDATA[$F{PaymentID}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="da036667-6208-47ba-93e7-fee1b8c4c7cd"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="3b03e365-379b-4390-b58f-132231d6867b" x="141" y="0" width="138" height="30" hTextAlign="Center">
+				<expression><![CDATA[$F{PaymentMethod}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cb1c49e9-b7a0-46d0-abe3-0915775a8bda"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="111d91d4-0321-427c-802b-d7a3ea99ae1d" x="279" y="0" width="138" height="30" hTextAlign="Center">
+				<expression><![CDATA[$F{Amount}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f27254c6-24f9-4db2-8a99-a1a3e158e99d"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="6a5bdfda-a492-4954-be55-c91e120554a4" x="417" y="0" width="138" height="30" hTextAlign="Center">
+				<expression><![CDATA[$F{PaymentDate}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7aaa6553-14b1-4fe7-8c42-c3c4c306381c"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+			</element>
+		</band>
+	</detail>
+	<columnFooter height="45" splitType="Stretch"/>
+	<pageFooter height="54" splitType="Stretch"/>
+	<summary height="42" splitType="Stretch"/>
+</jasperReport>

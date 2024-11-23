@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="loginPage" prefHeight="641.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.rms.controller.LoginFormController">
+   <children>
+      <ImageView fitHeight="646.0" fitWidth="417.0" pickOnBounds="true" preserveRatio="true" />
+      <AnchorPane fx:id="APid" layoutX="428.0" layoutY="-1.0" prefHeight="673.0" prefWidth="579.0" style="-fx-background-color: #fdcb6e;">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="21.0" layoutY="127.0" prefHeight="125.0" prefWidth="544.0" text="WELCOME TO SUN HOUSE RESTAURANT">
+               <font>
+                  <Font name="MV Boli" size="26.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="135.0" fitWidth="142.0" layoutX="14.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fitHeight="115.0" fitWidth="142.0" layoutX="14.0" layoutY="31.0">
+               <image>
+                  <Image url="@../images/logo.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="48.0" fitWidth="48.0" layoutX="82.0" layoutY="251.0">
+               <image>
+                  <Image url="@../images/icons8-username-50.png" />
+               </image>
+            </ImageView>
+            <TextField fx:id="txtuser" layoutX="149.0" layoutY="253.0" onAction="#userOA" prefHeight="42.0" prefWidth="249.0" promptText="USER NAME" style="-fx-border-color: #2d3436; -fx-border-width: 0px 0px 2px 0px; -fx-background-color: transparent;" />
+            <ImageView fitHeight="42.0" fitWidth="48.0" layoutX="83.0" layoutY="360.0">
+               <image>
+                  <Image url="@../images/icons8-password-48.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="loginid" alignment="CENTER" contentDisplay="CENTER" layoutX="83.0" layoutY="446.0" mnemonicParsing="false" onAction="#loginOnAction" prefHeight="48.0" prefWidth="338.0" style="-fx-background-color: #ffeaa7; -fx-background-radius: 30;" text="LOGIN" textAlignment="CENTER">
+               <font>
+                  <Font name="Constantia Bold" size="18.0" />
+               </font>
+               <effect>
+                  <DropShadow height="70.13" radius="36.905" width="79.49">
+                     <color>
+                        <Color red="0.3686274588108063" green="0.29411765933036804" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Button>
+            <PasswordField fx:id="txtpass" layoutX="149.0" layoutY="359.0" onAction="#PassonAction" prefHeight="42.0" prefWidth="249.0" promptText="PASSWORD" style="-fx-border-color: #2d3436; -fx-border-width: 0px 0px 2px 0px; -fx-background-color: transparent;" />
+            <Button fx:id="Signupid" alignment="CENTER" contentDisplay="CENTER" layoutX="201.0" layoutY="524.0" mnemonicParsing="false" onAction="#SignOA" prefHeight="21.0" prefWidth="183.0" style="-fx-background-color: #ffeaa7; -fx-background-radius: 30;" text="SIGNUP">
+               <font>
+                  <Font name="Constantia Bold" size="18.0" />
+               </font>
+               <effect>
+                  <DropShadow height="77.74" radius="38.8075" width="79.49">
+                     <color>
+                        <Color red="0.3686274588108063" green="0.29411765933036804" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Button>
+            <Label layoutX="21.0" layoutY="525.0" prefHeight="34.0" prefWidth="190.0" text="Don't have an Account yet?">
+               <font>
+                  <Font name="Ebrima Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="TimeID" layoutX="362.0" layoutY="23.0" prefHeight="42.0" prefWidth="190.0" />
+            <Button fx:id="btnForgotPassword" layoutX="386.0" layoutY="411.0" mnemonicParsing="false" onAction="#ForgotPasswordOA" prefHeight="10.0" prefWidth="170.0" style="-fx-background-color: #ffeaa7;" text="Forgot Password???" textFill="#1f1fcf" />
+         </children>
+      </AnchorPane>
+      <ImageView fitHeight="671.0" fitWidth="442.0" layoutX="-14.0">
+         <image>
+            <Image url="@../images/login%20background.jpg" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="customerAPid" prefHeight="683.0" prefWidth="1066.0" style="-fx-background-color: E7E4D1;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.rms.controller.CustomerController">
+   <children>
+      <Label alignment="CENTER" layoutX="438.0" layoutY="33.0" prefHeight="63.0" prefWidth="190.0" style="-fx-background-color: E5C08A;" text="Customer" textFill="#080808">
+         <font>
+            <Font name="Franklin Gothic Medium" size="24.0" />
+         </font>
+      </Label>
+      <Group layoutX="124.0" layoutY="134.0">
+         <children>
+            <Group layoutX="9.0" layoutY="-10.0">
+               <children>
+                  <Group layoutX="34.0" layoutY="14.0">
+                     <children>
+                        <Label layoutX="-45.0" layoutY="16.0" prefHeight="19.0" prefWidth="140.0" text="Customer Id">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="-45.0" layoutY="66.0" prefHeight="13.0" prefWidth="78.0" text="Name">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="-43.0" layoutY="120.0" prefHeight="20.0" prefWidth="74.0" text="Address">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="450.0" layoutY="67.0" prefHeight="20.0" prefWidth="55.0" text="Email">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="451.0" layoutY="119.0" text="Phone">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtName" layoutX="106.0" layoutY="67.0" prefHeight="25.0" prefWidth="213.0" promptText="Name" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;" />
+                        <TextField fx:id="txtaddress" layoutX="106.0" layoutY="119.0" prefHeight="15.0" prefWidth="218.0" promptText="abcd" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;" />
+                        <TextField fx:id="txtEmail" layoutX="566.0" layoutY="67.0" prefHeight="22.0" prefWidth="205.0" promptText="abc@gmail.com" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;" />
+                        <TextField fx:id="txtPhone" layoutX="562.0" layoutY="117.0" prefHeight="23.0" prefWidth="209.0" promptText="+947834567" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;" />
+                        <Label layoutX="450.0" layoutY="17.0" prefHeight="24.0" prefWidth="70.0" text="UserId">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtUserId" layoutX="566.0" layoutY="12.0" prefHeight="36.0" prefWidth="200.0" promptText="UserId" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px 0px; -fx-background-color: transeparent;" />
+                        <TextField fx:id="txtCustomerid" layoutX="106.0" layoutY="17.0" prefHeight="27.0" prefWidth="208.0" promptText="Customer id" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;" />
+                     </children>
+                  </Group>
+               </children>
+            </Group>
+            <Group layoutX="17.0" layoutY="198.0">
+               <children>
+                  <Button fx:id="Generatereport" layoutY="1.0" mnemonicParsing="false" onAction="#generateOA" style="-fx-background-color: #778ca3;" text="Generate report">
+                     <font>
+                        <Font name="System Bold Italic" size="14.0" />
+                     </font></Button>
+                  <Button fx:id="Reset" layoutX="189.0" layoutY="2.0" mnemonicParsing="false" onAction="#ResetOA" prefHeight="26.0" prefWidth="81.0" style="-fx-background-color: #ff9b9b;" text="Reset">
+                     <font>
+                        <Font name="System Bold Italic" size="14.0" />
+                     </font></Button>
+                  <Button fx:id="Delete" layoutX="360.0" layoutY="2.0" mnemonicParsing="false" onAction="#deleteOA" prefHeight="26.0" prefWidth="74.0" style="-fx-background-color: #ec6666;" text="Delete">
+                     <font>
+                        <Font name="System Bold Italic" size="14.0" />
+                     </font></Button>
+                  <Button fx:id="Update" layoutX="512.0" layoutY="2.0" mnemonicParsing="false" onAction="#UpdateOA" prefHeight="26.0" prefWidth="74.0" style="-fx-background-color: #66c1ea;" text="Update">
+                     <font>
+                        <Font name="System Bold Italic" size="14.0" />
+                     </font></Button>
+                  <Button fx:id="saveid" layoutX="667.0" mnemonicParsing="false" onAction="#saveOnAction" prefHeight="28.0" prefWidth="74.0" style="-fx-background-color: #26de81;" text="Save">
+                     <font>
+                        <Font name="System Bold Italic" size="14.0" />
+                     </font></Button>
+               </children>
+            </Group>
+         </children>
+      </Group>
+      <TableView fx:id="tblcustomer" layoutX="110.0" layoutY="380.0" onMouseClicked="#clickOnAction" prefHeight="185.0" prefWidth="783.0">
+         <columns>
+            <TableColumn fx:id="colCustomerId" prefWidth="113.5999755859375" text="CustomerId" />
+            <TableColumn fx:id="colName" prefWidth="125.59998321533203" text="Name" />
+            <TableColumn fx:id="coladdress" prefWidth="124.79998779296875" text="Address" />
+            <TableColumn fx:id="colPhone" prefWidth="147.19992065429688" text="Phone" />
+            <TableColumn fx:id="colEmail" prefWidth="147.20001220703125" text="Email" />
+            <TableColumn fx:id="coluserid" prefWidth="144.7999267578125" text="UserId" />
+         </columns>
+      </TableView>
+      <Button fx:id="Logoutid" layoutX="792.0" layoutY="587.0" mnemonicParsing="false" onAction="#logoutOA" prefHeight="45.0" prefWidth="131.0" style="-fx-background-color: #bdc3c7; -fx-background-radius: 20;" text="LOGOUT">
+         <font>
+            <Font name="Nirmala UI Bold" size="18.0" />
+         </font>
+      </Button>
+      <TextField fx:id="txtSearchCustomerId" layoutX="92.0" layoutY="107.0" prefHeight="27.0" prefWidth="190.0" promptText="Customer id" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;" />
+      <Button fx:id="search" layoutX="309.0" layoutY="115.0" mnemonicParsing="false" onAction="#searchOnAction" prefHeight="27.0" prefWidth="79.0" style="-fx-background-color: #3dcfc2;" text="search">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <Button layoutX="615.0" layoutY="586.0" mnemonicParsing="false" onAction="#btnOpenMailSendModelOnAction" prefHeight="46.0" prefWidth="140.0" style="-fx-background-color: C09D7B; -fx-background-radius: 20;" text="Send Mail">
+         <font>
+            <Font name="Nirmala UI Bold" size="18.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

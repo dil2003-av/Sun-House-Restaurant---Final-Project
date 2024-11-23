@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="OrderFormid" prefHeight="700.0" prefWidth="1063.0" style="-fx-background-color: E7E4D1;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.rms.controller.OrderFormController">
+   <children>
+      <Label layoutX="432.0" layoutY="14.0" prefHeight="62.0" prefWidth="266.0" style="-fx-background-color: E5C08A;" text="           Orders Form" textFill="#080808">
+         <font>
+            <Font name="Franklin Gothic Medium" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="Employeeid" layoutX="106.0" layoutY="96.0" prefHeight="26.0" prefWidth="96.0" text="Order Id">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtOrderId" layoutX="232.0" layoutY="94.0" prefHeight="26.0" prefWidth="198.0" promptText="Order ID" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></TextField>
+      <Label layoutX="532.0" layoutY="141.0" prefHeight="24.0" prefWidth="112.0" text="Customer Id">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="612.0" layoutY="196.0" prefHeight="27.0" prefWidth="157.0" />
+      <Label layoutX="106.0" layoutY="155.0" prefHeight="24.0" prefWidth="66.0" text="Status">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="Employeeid1" layoutX="102.0" layoutY="207.0" prefHeight="27.0" prefWidth="102.0" text="Order Type">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="102.0" layoutY="379.0" prefHeight="30.0" prefWidth="164.0" text="Menu Item Name">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="107.0" layoutY="333.0" prefHeight="27.0" prefWidth="91.0" text="Unit Price">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="100.0" layoutY="277.0" prefHeight="27.0" prefWidth="144.0" text="Reservation ID">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="525.0" layoutY="193.0" prefHeight="27.0" prefWidth="144.0" text="Payment ID">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="515.0" layoutY="250.0" prefHeight="27.0" prefWidth="164.0" text="Payment Method">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="525.0" layoutY="304.0" prefHeight="20.0" prefWidth="126.0" text="Menu ID">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="532.0" layoutY="96.0" prefHeight="27.0" prefWidth="144.0" text="Customer Tele">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="525.0" layoutY="365.0" prefHeight="6.0" prefWidth="102.0" text="Qty">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tblOrderForm" layoutX="103.0" layoutY="465.0" onMouseClicked="#onClickTable" prefHeight="129.0" prefWidth="874.0">
+        <columns>
+          <TableColumn fx:id="colMenuItemD" prefWidth="165.6000213623047" text="Menu Item ID" />
+          <TableColumn fx:id="colIitemName" prefWidth="196.0" text="Menu Item Name" />
+            <TableColumn fx:id="colUnitPrice" prefWidth="212.79998779296875" text="Unit price" />
+            <TableColumn fx:id="colQty" prefWidth="152.79998779296875" text="Qty" />
+            <TableColumn fx:id="colPrice" prefWidth="148.79998779296875" text="Order ItemPrice" />
+        </columns>
+      </TableView>
+      <Button fx:id="searchName" layoutX="430.0" layoutY="426.0" mnemonicParsing="false" onAction="#itemsearchOnAction" prefHeight="27.0" prefWidth="79.0" style="-fx-background-color: #3dcfc2;" text="search">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="searchTele" layoutX="913.0" layoutY="108.0" mnemonicParsing="false" onAction="#TelesearchOnAction" prefHeight="27.0" prefWidth="79.0" style="-fx-background-color: #3dcfc2;" text="search">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="search" layoutX="440.0" layoutY="95.0" mnemonicParsing="false" onAction="#searchOnAction" prefHeight="18.0" prefWidth="66.0" style="-fx-background-color: #3dcfc2;" text="search">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnAdd" layoutX="770.0" layoutY="426.0" mnemonicParsing="false" onAction="#AddtoCartOA" prefHeight="30.0" prefWidth="137.0" style="-fx-background-radius: 10; -fx-background-color: #b1f3b1;" text="Add To Cart">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Button>
+      <Button fx:id="btnPlaceOrder" layoutX="669.0" layoutY="606.0" mnemonicParsing="false" onAction="#PlaceOrderOA" prefHeight="26.0" prefWidth="144.0" style="-fx-background-radius: 10; -fx-background-color: #ee90bf;" text="Place Order">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Button>
+      <Button fx:id="btnRemoveCart" layoutX="597.0" layoutY="426.0" mnemonicParsing="false" onAction="#RemoveCartOA" prefHeight="30.0" prefWidth="144.0" style="-fx-background-radius: 10; -fx-background-color: #ff8282;" text="Remove in Cart">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnReset" layoutX="139.0" layoutY="614.0" mnemonicParsing="false" onAction="#ResetOA" prefHeight="30.0" prefWidth="96.0" style="-fx-background-radius: 10; -fx-background-color: E5A7B1;" text="Reset">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnUpdate" layoutX="275.0" layoutY="614.0" mnemonicParsing="false" onAction="#UpdateOA" prefHeight="30.0" prefWidth="112.0" style="-fx-background-radius: 10; -fx-background-color: #a8ce93;" text="Update Status">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <TextField fx:id="txtUnitPrice" layoutX="270.0" layoutY="335.0" prefHeight="26.0" prefWidth="198.0" promptText="00.00" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="txtReservationID" layoutX="266.0" layoutY="275.0" prefHeight="30.0" prefWidth="207.0" promptText="Reservation ID" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="txtPaymentID" layoutX="685.0" layoutY="191.0" prefHeight="30.0" prefWidth="218.0" promptText="Payment ID" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="txtMenuID" layoutX="706.0" layoutY="304.0" prefHeight="26.0" prefWidth="218.0" promptText="Menu ID" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="txtQty" layoutX="702.0" layoutY="364.0" prefHeight="26.0" prefWidth="226.0" promptText="QTY" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="txtCustomerID" layoutX="695.0" layoutY="139.0" prefHeight="30.0" prefWidth="207.0" promptText="Customer ID" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="txtphone" layoutX="691.0" layoutY="94.0" prefHeight="30.0" prefWidth="207.0" promptText="07xxxxxxxx" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="txtItemName" layoutX="266.0" layoutY="379.0" prefHeight="30.0" prefWidth="207.0" promptText="Item Name" style="-fx-border-color: #a55eea; -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </TextField>
+      <ChoiceBox fx:id="choiseBoxOrderStatus" layoutX="266.0" layoutY="155.0" prefHeight="27.0" prefWidth="198.0">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="Available" />
+               <String fx:value="Occupied" />
+               <String fx:value="Reserved" />
+            </FXCollections>
+         </items>
+      </ChoiceBox>
+      <ChoiceBox fx:id="choiceBoxOrderType" layoutX="266.0" layoutY="221.0" prefHeight="18.0" prefWidth="198.0">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="Dine-in" />
+               <String fx:value="Takeaway" />
+               <String fx:value="Delivery" />
+            </FXCollections>
+         </items>
+      </ChoiceBox>
+
+      <ChoiceBox fx:id="choiseBoxPaymentMethod" layoutX="695.0" layoutY="251.0" prefHeight="26.0" prefWidth="207.0">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="Cash" />
+               <String fx:value="Credit" />
+               <String fx:value="Debit" />
+               <String fx:value="Online Pay" />
+            </FXCollections>
+         </items>
+      </ChoiceBox>
+      <Label layoutX="426.0" layoutY="606.0" prefHeight="26.0" prefWidth="96.0" text="TOTAL AMOUNT">
+         <font>
+            <Font name="Ebrima Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="txtAmount" layoutX="540.0" layoutY="611.0" prefHeight="10.0" prefWidth="50.0" text="   0.0">
+         <font>
+            <Font name="Ebrima Bold" size="12.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnBack" layoutX="847.0" layoutY="603.0" mnemonicParsing="false" onAction="#BackOA" prefHeight="45.0" prefWidth="131.0" style="-fx-background-color: #bdc3c7; -fx-background-radius: 20;" text="BACK" textFill="#7f8955">
+         <font>
+            <Font name="Nirmala UI Bold" size="18.0" />
+         </font>
+      </Button>
+      <Label layoutX="716.0" layoutY="30.0" prefHeight="15.0" prefWidth="50.0" text="Date">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblOrderDate" layoutX="813.0" layoutY="29.0" prefHeight="30.0" prefWidth="158.0" />
+   </children>
+</AnchorPane>
