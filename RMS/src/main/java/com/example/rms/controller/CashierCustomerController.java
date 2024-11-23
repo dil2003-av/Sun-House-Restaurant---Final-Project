@@ -471,4 +471,6 @@ public class CashierCustomerController implements Initializable {
         }
     }
 
+    //Comment
+
 }
