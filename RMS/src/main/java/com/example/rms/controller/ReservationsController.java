@@ -1,6 +1,9 @@
 package com.example.rms.controller;
 
 import com.example.rms.Tm.ReservationsTm;
+import com.example.rms.bo.BOFactory;
+import com.example.rms.bo.custom.ReservationBO;
+import com.example.rms.bo.custom.ReviewsBO;
 import com.example.rms.dto.Reservationsdto;
 import com.example.rms.model.ReservationsModel;
 import javafx.animation.Animation;
@@ -90,6 +93,9 @@ public class ReservationsController implements Initializable {
     @FXML
     private Button updateid;
 
+    public ReservationBO reservationBO = (ReservationBO) BOFactory.getInstance().getBO(BOFactory.BOType.RESERVATION);
+
+
     private void showDate() {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -112,9 +118,11 @@ public class ReservationsController implements Initializable {
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         try {
-            txtReservationId.setText(ReservationsModel.getNextReservationId());
+            txtReservationId.setText(reservationBO.getNextReservationId());
             refreshPage();
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
         showDate();
@@ -165,11 +173,11 @@ public class ReservationsController implements Initializable {
     }
 
     @FXML
-    void DeleteOA(ActionEvent event) throws SQLException {
+    void DeleteOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         String reservationId = txtReservationId.getText();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this reservation?", ButtonType.YES, ButtonType.NO);
         if (alert.showAndWait().get() == ButtonType.YES) {
-            boolean isDeleted = ReservationsModel.deleteReservation(reservationId);
+            boolean isDeleted = reservationBO.deleteReservation(reservationId);
             if (isDeleted) {
                 new Alert(Alert.AlertType.INFORMATION, "Reservation deleted successfully!").show();
                 refreshPage();
@@ -180,7 +188,7 @@ public class ReservationsController implements Initializable {
     }
 
     @FXML
-    void SaveOA(ActionEvent event) throws SQLException {
+    void SaveOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         Reservationsdto reservation = new Reservationsdto(
                 txtReservationId.getText(),
                 txtCustomerId.getText(),
@@ -190,7 +198,7 @@ public class ReservationsController implements Initializable {
                 txtStatus.getText()
         );
 
-        boolean isSaved = ReservationsModel.saveReservation(reservation);
+        boolean isSaved = reservationBO.saveReservation(reservation);
 
         if (isSaved) {
             new Alert(Alert.AlertType.INFORMATION, "Reservation saved successfully!").show();
@@ -201,7 +209,7 @@ public class ReservationsController implements Initializable {
     }
 
     @FXML
-    void updateOA(ActionEvent event) throws SQLException {
+    void updateOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         Reservationsdto reservation = new Reservationsdto(
                 txtReservationId.getText(),
                 txtCustomerId.getText(),
@@ -211,7 +219,7 @@ public class ReservationsController implements Initializable {
                 txtStatus.getText()
         );
 
-        boolean isUpdated = ReservationsModel.updateReservation(reservation);
+        boolean isUpdated = reservationBO.updateReservation(reservation);
 
         if (isUpdated) {
             new Alert(Alert.AlertType.INFORMATION, "Reservation updated successfully!").show();
@@ -239,7 +247,7 @@ public class ReservationsController implements Initializable {
     }
 
     @FXML
-    void ResetOA(ActionEvent event) throws SQLException {
+    void ResetOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
@@ -249,9 +257,9 @@ public class ReservationsController implements Initializable {
     }
 
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         refreshTable();
-        txtReservationId.setText(ReservationsModel.getNextReservationId());
+        txtReservationId.setText(reservationBO.getNextReservationId());
         txtCustomerId.clear();
         txtReservationDate.clear();
         txtGuest.clear();
@@ -263,8 +271,8 @@ public class ReservationsController implements Initializable {
         updateid.setDisable(true);
     }
 
-    private void refreshTable() throws SQLException {
-        ArrayList<Reservationsdto> reservations = ReservationsModel.getAllReservations();
+    private void refreshTable() throws SQLException, ClassNotFoundException {
+        ArrayList<Reservationsdto> reservations = reservationBO.getAllReservations();
         ObservableList<ReservationsTm> reservationTMs = FXCollections.observableArrayList();
 
         for (Reservationsdto reservation : reservations) {
@@ -287,7 +295,7 @@ public class ReservationsController implements Initializable {
         private Button btnSearchReservation; // Button to trigger search action
 
         @FXML
-        void searchOnAction(ActionEvent event) throws SQLException {
+        void searchOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
             String reservationId = txtSearchReservationId.getText(); // Get the Reservation ID entered in the text field
 
             // Reset border color for the search field

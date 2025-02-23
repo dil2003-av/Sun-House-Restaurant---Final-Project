@@ -1,8 +1,10 @@
 package com.example.rms.controller;
 
 import com.example.rms.Tm.MenuItemIngredientsTm;
+import com.example.rms.bo.BOFactory;
+import com.example.rms.bo.custom.MenuItemIngrediantsBO;
 import com.example.rms.dto.MenuItemIngredientsdto;
-import com.example.rms.model.MenuItemIngredientsModel;
+//import com.example.rms.model.MenuItemIngredientsModel;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -70,6 +72,8 @@ public class MenuItemIngredientsController implements Initializable {
     @FXML
     private Button btnBack;
 
+    public MenuItemIngrediantsBO menuItemIngrediantsBO = (MenuItemIngrediantsBO) BOFactory.getInstance().getBO(BOFactory.BOType.MENU_ITEM_INGREDIANT);
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         colMenuItemID.setCellValueFactory(new PropertyValueFactory<>("menuItemId"));
@@ -80,13 +84,15 @@ public class MenuItemIngredientsController implements Initializable {
             refreshPage();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
 
         setupEnterKeyListeners();
     }
 
     @FXML
-    void saveOnAction(ActionEvent event) throws SQLException {
+    void saveOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String menuItemId = txtMenuItemId.getText();
         String inventoryItemId = txtInventoryItemID.getText();
         String quantityStr = txtQTY.getText();
@@ -106,7 +112,7 @@ public class MenuItemIngredientsController implements Initializable {
 
         MenuItemIngredientsdto dto = new MenuItemIngredientsdto(menuItemId, inventoryItemId, quantity);
 
-        boolean isSaved = MenuItemIngredientsModel.saveMenuItemIngredient(dto);
+        boolean isSaved = menuItemIngrediantsBO.saveMenuItemIngredient(dto);
         if (isSaved) {
             new Alert(Alert.AlertType.INFORMATION, "Saved successfully!").show();
             refreshPage();
@@ -116,7 +122,7 @@ public class MenuItemIngredientsController implements Initializable {
     }
 
     @FXML
-    void UpdateOA(ActionEvent event) throws SQLException {
+    void UpdateOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         String menuItemId = txtMenuItemId.getText();
         String inventoryItemId = txtInventoryItemID.getText();
         String quantityStr = txtQTY.getText();
@@ -136,7 +142,7 @@ public class MenuItemIngredientsController implements Initializable {
 
         MenuItemIngredientsdto dto = new MenuItemIngredientsdto(menuItemId, inventoryItemId, quantity);
 
-        boolean isUpdated = MenuItemIngredientsModel.updateMenuItemIngredient(dto);
+        boolean isUpdated = menuItemIngrediantsBO.updateMenuItemIngredient(dto);
         if (isUpdated) {
             new Alert(Alert.AlertType.INFORMATION, "Updated successfully!").show();
             refreshPage();
@@ -146,7 +152,7 @@ public class MenuItemIngredientsController implements Initializable {
     }
 
     @FXML
-    void deleteOA(ActionEvent event) throws SQLException {
+    void deleteOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         String menuItemId = txtMenuItemId.getText();
         String inventoryItemId = txtInventoryItemID.getText();
 
@@ -154,7 +160,7 @@ public class MenuItemIngredientsController implements Initializable {
         Optional<ButtonType> buttonType = alert.showAndWait();
 
         if (buttonType.isPresent() && buttonType.get() == ButtonType.YES) {
-            boolean isDeleted = MenuItemIngredientsModel.deleteMenuItemIngredient(menuItemId, inventoryItemId);
+            boolean isDeleted = menuItemIngrediantsBO.deleteMenuItemIngredient(menuItemId, inventoryItemId);
 
             if (isDeleted) {
                 new Alert(Alert.AlertType.INFORMATION, "Deleted successfully!").show();
@@ -171,7 +177,7 @@ public class MenuItemIngredientsController implements Initializable {
 
 
     @FXML
-    void ResetOA(ActionEvent event) throws SQLException {
+    void ResetOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
@@ -195,7 +201,7 @@ public class MenuItemIngredientsController implements Initializable {
         MenuItemIngredientsAPid.getChildren().add(FXMLLoader.load(getClass().getResource("/view/HomePage.fxml")));
     }
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         refreshTable();
 
         txtMenuItemId.setText("");
@@ -207,8 +213,8 @@ public class MenuItemIngredientsController implements Initializable {
         Update.setDisable(true);
     }
 
-    private void refreshTable() throws SQLException {
-        ArrayList<MenuItemIngredientsdto> dtoList = MenuItemIngredientsModel.getAllMenuItemIngredients();
+    private void refreshTable() throws SQLException, ClassNotFoundException {
+        ArrayList<MenuItemIngredientsdto> dtoList = menuItemIngrediantsBO.getAllMenuItemIngredients();
         ObservableList<MenuItemIngredientsTm> tmList = FXCollections.observableArrayList();
 
         for (MenuItemIngredientsdto dto : dtoList) {

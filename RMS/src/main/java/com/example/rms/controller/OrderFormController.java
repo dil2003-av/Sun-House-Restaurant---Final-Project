@@ -1,6 +1,9 @@
 package com.example.rms.controller;
 
 import com.example.rms.Tm.CartTm;
+import com.example.rms.bo.BOFactory;
+import com.example.rms.bo.custom.PlaceOrderBO;
+import com.example.rms.bo.custom.SuppliersBO;
 import com.example.rms.dto.*;
 import com.example.rms.model.*;
 import javafx.animation.KeyFrame;
@@ -27,7 +30,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import static com.example.rms.model.OrderFormModel.getNextOrderId;
+//import static com.example.rms.model.OrderFormModel.getNextOrderId;
 
 public class OrderFormController implements Initializable {
 
@@ -59,7 +62,7 @@ public class OrderFormController implements Initializable {
     private Button btnUpdate;
 
     @FXML
-  private ChoiceBox<String> choiceBoxOrderType, choiseBoxOrderStatus, choiseBoxPaymentMethod;
+    private ChoiceBox<String> choiceBoxOrderType, choiseBoxOrderStatus, choiseBoxPaymentMethod;
 
 
     @FXML
@@ -134,17 +137,26 @@ public class OrderFormController implements Initializable {
     private TextField txtphone;
 
     private final OrdersModel ordersModel = new OrdersModel();
-    private final OrderFormModel orderFormModel = new OrderFormModel();
+    //private final OrderFormModel orderFormModel = new OrderFormModel();
     private final ObservableList<CartTm> cartTMS = FXCollections.observableArrayList();
+
+    public PlaceOrderBO placeOrderBO = (PlaceOrderBO) BOFactory.getInstance().getBO(BOFactory.BOType.PLACE_ORDER);
+
 
     static double totalAmount = 0;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-      //  btnDelete.setVisible(false);
+        //  btnDelete.setVisible(false);
         showDate();
-        initializeOrderDetails();
+        try {
+            initializeOrderDetails();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         setCellValues();
         setupEnterKeyListeners();
     }
@@ -158,13 +170,9 @@ public class OrderFormController implements Initializable {
         dateTimeline.play();
     }
 
-    private void initializeOrderDetails() {
-        try {
-            txtOrderId.setText(getNextOrderId());
-            txtPaymentID.setText(PaymentsModel.getNextPaymentId());
-        } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Error initializing order details: " + e.getMessage());
-        }
+    private void initializeOrderDetails() throws SQLException, ClassNotFoundException {
+        txtOrderId.setText(getNextOrderId());
+        txtPaymentID.setText(placeOrderBO.getNextPaymentId());
     }
 
     private void setupEnterKeyListeners() {
@@ -192,29 +200,29 @@ public class OrderFormController implements Initializable {
             }
         });
 
-            txtphone.setOnKeyPressed(event -> {
-                if (event.getCode() == KeyCode.ENTER) {
-                    txtCustomerID.requestFocus(); // Move focus to the Delivery Date field
-                }
-            });
+        txtphone.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                txtCustomerID.requestFocus(); // Move focus to the Delivery Date field
+            }
+        });
 
-            txtCustomerID.setOnKeyPressed(event -> {
-                if (event.getCode() == KeyCode.ENTER) {
-                    txtPaymentID.requestFocus(); // Move focus to the Delivery Status field
-                }
-            });
+        txtCustomerID.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                txtPaymentID.requestFocus(); // Move focus to the Delivery Status field
+            }
+        });
 
-            txtPaymentID.setOnKeyPressed(event -> {
-                if (event.getCode() == KeyCode.ENTER) {
-                    txtMenuID.requestFocus(); // Move focus to the Delivery Address field
-                }
-            });
+        txtPaymentID.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                txtMenuID.requestFocus(); // Move focus to the Delivery Address field
+            }
+        });
 
-            txtMenuID.setOnKeyPressed(event -> {
-                if (event.getCode() == KeyCode.ENTER) {
-                    txtQty.requestFocus();
-                }
-            });
+        txtMenuID.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                txtQty.requestFocus();
+            }
+        });
         txtQty.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 txtQty.requestFocus();
@@ -235,10 +243,12 @@ public class OrderFormController implements Initializable {
 
     private String getNextOrderId() {
         try {
-            return ordersModel.getNextOrderId();
+            return placeOrderBO.getNextOrderId();
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Error fetching next Order ID: " + e.getMessage());
             return "";
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -288,7 +298,7 @@ public class OrderFormController implements Initializable {
         try {
             // Validate user inputs
             if (txtOrderId.getText().isEmpty() || txtCustomerID.getText().isEmpty() ||
-                     txtPaymentID.getText().isEmpty() ||
+                    txtPaymentID.getText().isEmpty() ||
                     choiceBoxOrderType.getValue() == null || choiseBoxOrderStatus.getValue() == null) {
                 showAlert(Alert.AlertType.WARNING, "Please fill in all required fields.");
                 return;
@@ -304,7 +314,7 @@ public class OrderFormController implements Initializable {
             double totalAmount = cartTMS.stream().mapToDouble(CartTm::getAmount).sum();
             String orderStatus = choiseBoxOrderStatus.getValue();
             String orderType = choiceBoxOrderType.getValue();
-           // String paymentMethod = choiseBoxPaymentMethod.getValue();
+            // String paymentMethod = choiseBoxPaymentMethod.getValue();
 
 
             // Create Order DTO
@@ -328,7 +338,7 @@ public class OrderFormController implements Initializable {
             paymentDtos.add(new Paymentsdto(paymentId, choiseBoxPaymentMethod.getValue(), totalAmount, Date.valueOf(orderDate)));
 
             // Place the order
-            boolean isSaved = orderFormModel.placeOrder(order, orderItemDtos, paymentDtos);
+            boolean isSaved = placeOrderBO.placeOrder(order, orderItemDtos, paymentDtos);
             if (isSaved) {
                 showAlert(Alert.AlertType.INFORMATION, "Order placed successfully!");
                 resetPage(); // Reset page after success
@@ -411,7 +421,7 @@ public class OrderFormController implements Initializable {
             }
 
             // Update order status using the model method
-            boolean isUpdated = orderFormModel.updateOrderStatus(orderId, status);
+            boolean isUpdated = placeOrderBO.updateOrderStatus(orderId, status);
             if (isUpdated) {
                 showAlert(Alert.AlertType.INFORMATION, "Order status updated successfully!");
             } else {

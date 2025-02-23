@@ -2,6 +2,9 @@ package com.example.rms.controller;
 
 import com.example.rms.Tm.TablesAssingmentsTm;
 import com.example.rms.Tm.UserTm;
+import com.example.rms.bo.BOFactory;
+import com.example.rms.bo.custom.TablesAssignmentBO;
+import com.example.rms.bo.custom.TablesBO;
 import com.example.rms.dto.TablesAssingmentsdto;
 import com.example.rms.model.TablesAssignmentsModel;
 import javafx.animation.Animation;
@@ -31,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import static com.example.rms.model.TablesAssignmentsModel.getNextTableAssignmentId;
+//import static com.example.rms.model.TablesAssignmentsModel.getNextTableAssignmentId;
 
 public class TablesAssignmentsController implements Initializable {
 
@@ -87,7 +90,11 @@ public class TablesAssignmentsController implements Initializable {
     private TextField txtSearchTableAssignmentId;  // Add this for the search input
 
     @FXML
-    private Button btnSearch;  // Add this for the search button
+    private Button btnSearch;
+
+
+    public TablesAssignmentBO tablesAssignmentBO = (TablesAssignmentBO) BOFactory.getInstance().getBO(BOFactory.BOType.TABLE_ASSIGNMENT);
+// Add this for the search button
 
 
     //    private void showTime() {
@@ -118,7 +125,7 @@ private void showCurrentDateTime() {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            txtTableAssignmentId.setText(getNextTableAssignmentId());
+            txtTableAssignmentId.setText(tablesAssignmentBO.getNextTableAssignmentId());
             refreshTable();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -202,13 +209,13 @@ private void showCurrentDateTime() {
     }
 
     @FXML
-    void DeleteOA(ActionEvent event) throws SQLException {
+    void DeleteOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         String tableAssignmentId = txtTableAssignmentId.getText();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this Table Assignment?", ButtonType.YES, ButtonType.NO);
         Optional<ButtonType> buttonType = alert.showAndWait();
         if (buttonType.get() == ButtonType.YES) {
-            boolean isDeleted = TablesAssignmentsModel.deleteTableAssignment(tableAssignmentId);
+            boolean isDeleted = tablesAssignmentBO.deleteTableAssignment(tableAssignmentId);
 
             if (isDeleted) {
                 new Alert(Alert.AlertType.INFORMATION, "Table Assignment Deleted...!").show();
@@ -220,7 +227,7 @@ private void showCurrentDateTime() {
     }
 
     @FXML
-    void ResetOA(ActionEvent event) throws SQLException {
+    void ResetOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
@@ -244,7 +251,7 @@ private void showCurrentDateTime() {
             );
 
             // Save the table assignment to the model
-            boolean isSaved = TablesAssignmentsModel.saveTableAssignment(tableAssignment);
+            boolean isSaved = tablesAssignmentBO.saveTableAssignment(tableAssignment);
             if (isSaved) {
                 refreshPage();
             } else {
@@ -254,6 +261,8 @@ private void showCurrentDateTime() {
             new Alert(Alert.AlertType.ERROR, "Invalid date format. Please enter the date in 'yyyy-MM-dd HH:mm:ss' format.").show();
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -263,7 +272,7 @@ private void showCurrentDateTime() {
     }
 
     @FXML
-    void updateOA(ActionEvent event) throws SQLException {
+    void updateOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         String tableAssignmentId = txtTableAssignmentId.getText();
         String tableId = txtTableID.getText();
         String reservationId = txtReservationId.getText();
@@ -271,7 +280,7 @@ private void showCurrentDateTime() {
 
         TablesAssingmentsdto tableAssignment = new TablesAssingmentsdto(tableAssignmentId, tableId, reservationId, assignmentTime);
 
-        boolean isUpdated = TablesAssignmentsModel.updateTableAssignment(tableAssignment);
+        boolean isUpdated = tablesAssignmentBO.updateTableAssignment(tableAssignment);
 
         if (isUpdated) {
             new Alert(Alert.AlertType.INFORMATION, "Table Assignment updated...!").show();
@@ -281,9 +290,9 @@ private void showCurrentDateTime() {
         }
     }
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         refreshTable();
-        txtAssignmentTime.setText(getNextTableAssignmentId());
+        txtAssignmentTime.setText(tablesAssignmentBO.getNextTableAssignmentId());
         txtTableID.clear();
         txtReservationId.clear();
         txtAssignmentTime.clear();
@@ -295,7 +304,7 @@ private void showCurrentDateTime() {
 
     private void refreshTable() {
         try {
-            ArrayList<TablesAssingmentsdto> tableAssignments = TablesAssignmentsModel.getAllTableAssignments();
+            ArrayList<TablesAssingmentsdto> tableAssignments = tablesAssignmentBO.getAllTableAssignments();
             ObservableList<TablesAssingmentsTm> tableAssignmentsTms = FXCollections.observableArrayList();
 
             for (TablesAssingmentsdto tableAssignment : tableAssignments) {
@@ -309,6 +318,8 @@ private void showCurrentDateTime() {
             tblTableAssignments.setItems(tableAssignmentsTms);
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -327,7 +338,7 @@ private void showCurrentDateTime() {
         }
     }
     @FXML
-    void searchOnAction(ActionEvent event) throws SQLException {
+    void searchOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String tableAssignmentId = txtSearchTableAssignmentId.getText(); // Get the Table Assignment ID entered in the text field
 
         if (tableAssignmentId.isEmpty()) {

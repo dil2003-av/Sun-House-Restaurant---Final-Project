@@ -20,7 +20,7 @@ public class SuppliersModel {
         }
         return "S001";
     }
-
+//
     // Save a supplier
     public static boolean saveSupplier(Suupliersdto supplier) throws SQLException {
         return CrudUtil.execute(

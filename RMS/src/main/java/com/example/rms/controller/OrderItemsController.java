@@ -1,6 +1,9 @@
 package com.example.rms.controller;
 
 import com.example.rms.Tm.OrderItemsTm;
+import com.example.rms.bo.BOFactory;
+import com.example.rms.bo.custom.InventoryItemsBO;
+import com.example.rms.bo.custom.OrderItemBO;
 import com.example.rms.dto.OrderItemsdto;
 import com.example.rms.dto.Ordersdto;
 import com.example.rms.dto.Paymentsdto;
@@ -84,6 +87,9 @@ public class OrderItemsController implements Initializable {
     @FXML
     private TextField txtPrice;
 
+    public OrderItemBO orderItemBO = (OrderItemBO) BOFactory.getInstance().getBO(BOFactory.BOType.ORDER_ITEM);
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colOrderItemId.setCellValueFactory(new PropertyValueFactory<>("orderItemId"));
@@ -93,9 +99,11 @@ public class OrderItemsController implements Initializable {
         colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
 
         try {
-            txtOrderItemId.setText(OrderItemsModel.getNextOrderItemId());
+            txtOrderItemId.setText(orderItemBO.getNextOrderItemId());
             refreshPage();
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
         setupEnterKeyListeners();
@@ -108,11 +116,11 @@ public class OrderItemsController implements Initializable {
     }
 
     @FXML
-    void DeleteOA(ActionEvent event) throws SQLException {
+    void DeleteOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         String orderItemId = txtOrderItemId.getText();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this order item?", ButtonType.YES, ButtonType.NO);
         if (alert.showAndWait().get() == ButtonType.YES) {
-            boolean isDeleted = OrderItemsModel.deleteOrderItem(orderItemId);
+            boolean isDeleted = orderItemBO.deleteOrderItem(orderItemId);
             if (isDeleted) {
                 new Alert(Alert.AlertType.INFORMATION, "Order item deleted successfully!").show();
                 refreshPage();
@@ -128,12 +136,12 @@ public class OrderItemsController implements Initializable {
     }
 
     @FXML
-    void ResetOA(ActionEvent event) throws SQLException {
+    void ResetOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
     @FXML
-    void SaveOA(ActionEvent event) throws SQLException {
+    void SaveOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         OrderItemsdto orderItem = new OrderItemsdto(
                 txtOrderItemId.getText(),
                 txtOrderId.getText(),
@@ -142,7 +150,7 @@ public class OrderItemsController implements Initializable {
                 Double.parseDouble(txtPrice.getText())
         );
 
-        boolean isSaved = OrderItemsModel.saveOrderItem(orderItem);
+        boolean isSaved = orderItemBO.saveOrderItem(orderItem);
 
         if (isSaved) {
             new Alert(Alert.AlertType.INFORMATION, "Order item saved successfully!").show();
@@ -153,7 +161,7 @@ public class OrderItemsController implements Initializable {
     }
 
     @FXML
-    void UpdateOA(ActionEvent event) throws SQLException {
+    void UpdateOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         OrderItemsdto orderItem = new OrderItemsdto(
                 txtOrderItemId.getText(),
                 txtOrderId.getText(),
@@ -162,7 +170,7 @@ public class OrderItemsController implements Initializable {
                 Double.parseDouble(txtPrice.getText())
         );
 
-        boolean isUpdated = OrderItemsModel.updateOrderItem(orderItem);
+        boolean isUpdated = orderItemBO.updateOrderItem(orderItem);
 
         if (isUpdated) {
             new Alert(Alert.AlertType.INFORMATION, "Order item updated successfully!").show();
@@ -188,9 +196,9 @@ public class OrderItemsController implements Initializable {
         }
     }
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         refreshTable();
-        txtOrderItemId.setText(OrderItemsModel.getNextOrderItemId());
+        txtOrderItemId.setText(orderItemBO.getNextOrderItemId());
         txtOrderId.clear();
         txtMenuItemId.clear();
         txtQuantity.clear();
@@ -201,8 +209,8 @@ public class OrderItemsController implements Initializable {
         btnUpdate.setDisable(true);
     }
 
-    private void refreshTable() throws SQLException {
-        ArrayList<OrderItemsdto> orderItems = OrderItemsModel.getAllOrderItems();
+    private void refreshTable() throws SQLException, ClassNotFoundException {
+        ArrayList<OrderItemsdto> orderItems = orderItemBO.getAllOrderItems();
         ObservableList<OrderItemsTm> orderItemsTMs = FXCollections.observableArrayList();
 
         for (OrderItemsdto orderItem : orderItems) {
@@ -248,7 +256,7 @@ public class OrderItemsController implements Initializable {
     private Button btnSearchOrderItem; // Button to trigger search action
 
     @FXML
-    void searchOnAction(ActionEvent event) throws SQLException {
+    void searchOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String orderItemId = txtSearchOrderItemsId.getText();
 
         // Reset border color for the search field

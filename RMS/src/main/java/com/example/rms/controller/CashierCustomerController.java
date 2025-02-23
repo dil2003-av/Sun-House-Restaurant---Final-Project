@@ -1,6 +1,8 @@
 package com.example.rms.controller;
 
 import com.example.rms.Tm.CustomerTm;
+import com.example.rms.bo.BOFactory;
+import com.example.rms.bo.custom.CustomerBo;
 import com.example.rms.db.DBConnection;
 import com.example.rms.dto.Customerdto;
 import com.example.rms.model.CustomerModel;
@@ -101,6 +103,8 @@ public class CashierCustomerController implements Initializable {
     @FXML
     private TextField txtUserId;
 
+    public CustomerBo customerBO = (CustomerBo) BOFactory.getInstance().getBO(BOFactory.BOType.CUSTOMER);
+
 //    private int currentIndex;
 
     @Override
@@ -115,15 +119,17 @@ public class CashierCustomerController implements Initializable {
 
         try {
             // Initialize Customer ID and refresh the page
-            txtCustomerid.setText(CustomerModel.getNextCustomerId());
+            txtCustomerid.setText(customerBO.getNextCustomerId());
             refreshPage();
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
         setupEnterKeyListeners();
     }
     @FXML
-    void ResetOA(ActionEvent event) throws SQLException {
+    void ResetOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
     @FXML
@@ -171,7 +177,7 @@ public class CashierCustomerController implements Initializable {
     }
 
     @FXML
-    void saveOnAction(ActionEvent event) throws SQLException {
+    void saveOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String id = txtCustomerid.getText();
         String name = txtName.getText();
         String address = txtaddress.getText();
@@ -217,7 +223,7 @@ public class CashierCustomerController implements Initializable {
             Customerdto customerDTO = new Customerdto(id, name, address,phone, email, userid);
 
             // Save the customer to the database
-            boolean isSaved = CustomerModel.saveCustomer(customerDTO);
+            boolean isSaved = customerBO.saveCustomer(customerDTO);
 
             if (isSaved) {
                 new Alert(Alert.AlertType.INFORMATION, "Customer saved successfully!").show();
@@ -231,7 +237,7 @@ public class CashierCustomerController implements Initializable {
     }
 
     @FXML
-    void UpdateOA(ActionEvent event) throws SQLException {
+    void UpdateOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         String id = txtCustomerid.getText();
         String name = txtName.getText();
         String address = txtaddress.getText();
@@ -275,7 +281,7 @@ public class CashierCustomerController implements Initializable {
         if (isValidName && isValidAddress && isValidPhone && isValidEmail) {
             Customerdto customer = new Customerdto(id, name, address, phone, email, userid);
 
-            boolean isUpdated = CustomerModel.updateCustomer(customer);
+            boolean isUpdated = customerBO.updateCustomer(customer);
             if (isUpdated) {
                 new Alert(Alert.AlertType.INFORMATION, "Customer updated successfully!").show();
                 refreshPage();
@@ -318,11 +324,11 @@ public class CashierCustomerController implements Initializable {
 
 
     @FXML
-    void deleteOA(ActionEvent event) throws SQLException {
+    void deleteOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         String customerId = txtCustomerid.getText();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this customer?", ButtonType.YES, ButtonType.NO);
         if (alert.showAndWait().get() == ButtonType.YES) {
-            boolean isDeleted = CustomerModel.deleteCustomer(customerId);
+            boolean isDeleted = customerBO.deleteCustomer(customerId);
             if (isDeleted) {
                 new Alert(Alert.AlertType.INFORMATION, "Customer deleted successfully!").show();
                 refreshPage();
@@ -356,8 +362,8 @@ public class CashierCustomerController implements Initializable {
 //        lblCustomerName.setText(customerDTO.getName());
 //    }
 
-    private void refreshPage() throws SQLException {
-        txtCustomerid.setText(CustomerModel.getNextCustomerId());
+    private void refreshPage() throws SQLException, ClassNotFoundException {
+        txtCustomerid.setText(customerBO.getNextCustomerId());
         refreshTable();
         txtName.clear();
         txtaddress.clear();
@@ -369,8 +375,8 @@ public class CashierCustomerController implements Initializable {
         Update.setDisable(true);
     }
 
-    private void refreshTable() throws SQLException {
-        ArrayList<Customerdto> customers = CustomerModel.getAllCustomers();
+    private void refreshTable() throws SQLException, ClassNotFoundException {
+        ArrayList<Customerdto> customers = customerBO.getAllCustomers();
         ObservableList<CustomerTm> customerTMs = FXCollections.observableArrayList();
 
         for (Customerdto customer : customers) {
@@ -435,7 +441,7 @@ public class CashierCustomerController implements Initializable {
 
 
     @FXML
-    void searchOnAction(ActionEvent event) throws SQLException {
+    void searchOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String customerId = txtSearchCustomerId.getText(); // Get the Customer ID entered in the search field
 
         // Reset border color for the search field

@@ -1,8 +1,11 @@
 package com.example.rms.controller;
 
 import com.example.rms.Tm.EmployeeTm;
+import com.example.rms.bo.BOFactory;
+import com.example.rms.bo.custom.EmployeeBO;
 import com.example.rms.dto.Employeedto;
 import com.example.rms.dto.Paymentsdto;
+import com.example.rms.entity.Employee;
 import com.example.rms.model.EmployeeModel;
 import com.example.rms.model.PaymentsModel;
 import javafx.animation.Animation;
@@ -77,14 +80,39 @@ public class EmployeeController implements Initializable {
     private TextField txtPosition;
 
     @FXML
-    void DeleteOA(ActionEvent event) throws SQLException {
+    private TableColumn<EmployeeTm, String> colEmail;
+
+    @FXML
+    private TableColumn<EmployeeTm, String> colEmployeeID;
+
+    @FXML
+    private TableColumn<EmployeeTm, String> colHiredate;
+
+    @FXML
+    private TableColumn<EmployeeTm, String > colName;
+
+    @FXML
+    private TableColumn<EmployeeTm, String> colPhone;
+
+    @FXML
+    private TableColumn<EmployeeTm, String> colPosition;
+
+    @FXML
+    private TableView<EmployeeTm> tblEmployee;
+
+
+    public EmployeeBO employeeBO = (EmployeeBO) BOFactory.getInstance().getBO(BOFactory.BOType.EMPLOYEE);
+
+
+    @FXML
+    void DeleteOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         String employeeId = txtEmployee.getText();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this employee?", ButtonType.YES, ButtonType.NO);
         Optional<ButtonType> buttonType = alert.showAndWait();
 
         // Check if the user clicked on the YES button
         if (buttonType.isPresent() && buttonType.get() == ButtonType.YES) {
-            boolean isDeleted = EmployeeModel.deleteEmployee(employeeId);
+            boolean isDeleted = employeeBO.deleteEmployee(employeeId);
 
             // Show appropriate message based on deletion success
             if (isDeleted) {
@@ -103,12 +131,12 @@ public class EmployeeController implements Initializable {
     }
 
     @FXML
-    void ResetOA(ActionEvent event) throws SQLException {
+    void ResetOA(ActionEvent event) throws SQLException, ClassNotFoundException {
        refreshPage();
     }
 
     @FXML
-    void SaveOA(ActionEvent event) throws SQLException {
+    void SaveOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         String id = txtEmployee.getText();
         String name = txtName.getText();
         String position = txtPosition.getText();
@@ -154,7 +182,8 @@ public class EmployeeController implements Initializable {
             );
 
             //Employeedto Employeedto = null;
-            boolean isSaved = EmployeeModel.saveEmployee(employeeDTO);
+            employeeBO.saveEmployee(new Employeedto(  id, name, position, phone, email, hireDate));
+            boolean isSaved = employeeBO.saveEmployee(employeeDTO);
             if (isSaved) {
                 new Alert(Alert.AlertType.INFORMATION, "Employee saved...!").show();
                 refreshPage();
@@ -191,7 +220,7 @@ public class EmployeeController implements Initializable {
     }
 
     @FXML
-    void UpdateOA(ActionEvent event) throws SQLException {
+    void UpdateOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         String id = txtEmployee.getText();
         String name = txtName.getText();
         String position = txtPosition.getText();
@@ -234,7 +263,8 @@ public class EmployeeController implements Initializable {
                     email.trim(),
                     hireDate
             );
-            boolean isUpdate = EmployeeModel.updateEmployee(employeeDTO);
+            employeeBO.updateEmployee(new Employeedto(  id, name, position, phone, email, hireDate));
+            boolean isUpdate = employeeBO.updateEmployee(employeeDTO);
             if (isUpdate) {
                 new Alert(Alert.AlertType.INFORMATION, "Employee updated...!").show();
                 refreshPage();
@@ -245,26 +275,6 @@ public class EmployeeController implements Initializable {
 
 
     }
-    @FXML
-    private TableColumn<EmployeeTm, String> colEmail;
-
-    @FXML
-    private TableColumn<EmployeeTm, String> colEmployeeID;
-
-    @FXML
-    private TableColumn<EmployeeTm, String> colHiredate;
-
-    @FXML
-    private TableColumn<EmployeeTm, String > colName;
-
-    @FXML
-    private TableColumn<EmployeeTm, String> colPhone;
-
-    @FXML
-    private TableColumn<EmployeeTm, String> colPosition;
-
-    @FXML
-    private TableView<EmployeeTm> tblEmployee;
 
     @FXML
     void logoutOA(ActionEvent event) throws IOException {
@@ -289,7 +299,7 @@ public class EmployeeController implements Initializable {
             System.out.println(nextEmployeeId);
             txtEmployee.setText(nextEmployeeId);
             refreshPage();
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
         showDate();
@@ -297,7 +307,7 @@ public class EmployeeController implements Initializable {
     }
 
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         refreshTable();
 
         String nextEmployeeId = EmployeeModel.getNextEmployeeId();
@@ -314,7 +324,7 @@ public class EmployeeController implements Initializable {
         btnUpdate.setDisable(true);
     }
 
-    private void refreshTable() throws SQLException {
+    private void refreshTable() throws SQLException, ClassNotFoundException {
         ArrayList<Employeedto> employeeDTOS = EmployeeModel.getAllEmployee();
         ObservableList<EmployeeTm> employeeTMS = FXCollections.observableArrayList();
 

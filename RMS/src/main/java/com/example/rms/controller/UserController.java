@@ -1,6 +1,9 @@
 package com.example.rms.controller;
 
 import com.example.rms.Tm.UserTm;
+import com.example.rms.bo.BOFactory;
+import com.example.rms.bo.custom.TablesBO;
+import com.example.rms.bo.custom.UserBO;
 import com.example.rms.dto.Userdto;
 import com.example.rms.model.UserModel;
 import javafx.animation.Animation;
@@ -28,8 +31,10 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import static com.example.rms.model.TablesAssignmentsModel.getNextTableAssignmentId;
+//import static com.example.rms.model.TablesAssignmentsModel.getNextTableAssignmentId;
 import static com.example.rms.model.UserModel.getNextUserId;
+
+
 
 public class UserController implements Initializable {
 
@@ -86,6 +91,8 @@ public class UserController implements Initializable {
 
     @FXML
     private Button updateid;
+
+    public UserBO userBO = (UserBO) BOFactory.getInstance().getBO(BOFactory.BOType.USER);
 
     private void showCurrentDateTime() {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -172,13 +179,13 @@ public class UserController implements Initializable {
     }
 
     @FXML
-    void DeleteOA(ActionEvent event) throws SQLException {
+    void DeleteOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         String userId = txtUserid.getText();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this User?", ButtonType.YES, ButtonType.NO);
         Optional<ButtonType> buttonType = alert.showAndWait();
         if (buttonType.get() == ButtonType.YES) {
-            boolean isDeleted = UserModel.deleteUser(userId);
+            boolean isDeleted = userBO.deleteUser(userId);
 
             if (isDeleted) {
                 new Alert(Alert.AlertType.INFORMATION, "User Deleted...!").show();
@@ -225,7 +232,7 @@ public class UserController implements Initializable {
                     txtEmployeeid.getText()
             );
 
-            boolean isSaved = UserModel.saveUser(user);
+            boolean isSaved = userBO.saveUser(user);
             if (isSaved) {
                 new Alert(Alert.AlertType.INFORMATION, "User Saved...!").show();
                 refreshPage();
@@ -243,7 +250,7 @@ public class UserController implements Initializable {
     }
 
     @FXML
-    void updateOA(ActionEvent event) throws SQLException {
+    void updateOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         String userId = txtUserid.getText();
         String username = txtUsername.getText();
         String password = txtpassword.getText();
@@ -253,7 +260,7 @@ public class UserController implements Initializable {
 
         Userdto user = new Userdto(userId, username, password, loginTime, employeeId);
 
-        boolean isUpdated = UserModel.updateUser(user);
+        boolean isUpdated = userBO.updateUser(user);
 
         if (isUpdated) {
             new Alert(Alert.AlertType.INFORMATION, "User updated...!").show();
@@ -279,7 +286,7 @@ public class UserController implements Initializable {
 
     private void refreshTable() {
         try {
-            ArrayList<Userdto> users = UserModel.getAllUsers();
+            ArrayList<Userdto> users = userBO.getAllUsers();
             ObservableList<UserTm> userTms = FXCollections.observableArrayList();
 
             for (Userdto user : users) {
@@ -294,6 +301,8 @@ public class UserController implements Initializable {
             tbluser.setItems(userTms);
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 

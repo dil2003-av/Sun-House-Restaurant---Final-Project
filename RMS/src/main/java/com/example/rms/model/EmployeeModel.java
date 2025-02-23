@@ -13,9 +13,7 @@ public class EmployeeModel {
     public static String getNextEmployeeId() throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
-        String sql = "select EmployeeID from employees " +
-                "order by EmployeeID desc " +
-                "limit  1";
+        String sql = "select EmployeeID from employees " + "order by EmployeeID desc " + "limit  1";
 
         PreparedStatement pts = connection.prepareStatement(sql);
         ResultSet rst = pts.executeQuery();

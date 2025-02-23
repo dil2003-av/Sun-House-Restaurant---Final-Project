@@ -236,11 +236,11 @@ public class MenuController implements Initializable {
     }
 
 
-@FXML
-private TextField txtSearchMenuItemId;
+    @FXML
+    private TextField txtSearchMenuItemId;
 
-@FXML
-private Button btnSearchMenuItem;
+    @FXML
+    private Button btnSearchMenuItem;
 
     @FXML
     void searchOnAction(ActionEvent event) throws Exception {

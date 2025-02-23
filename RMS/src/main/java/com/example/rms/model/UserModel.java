@@ -20,52 +20,52 @@ public class UserModel {
         }
         return "U001";
     }
-
-    // Save a User
-    public static boolean saveUser(Userdto user) throws SQLException {
-        return CrudUtil.execute(
-                "INSERT INTO users (UserID, Username, Password, LoginTime, EmployeeID) VALUES (?, ?, ?, ?, ?)",
-                user.getId(),
-                user.getName(),
-                user.getPassword(),
-                user.getLoginTime(),
-                user.getEmployeeId()
-        );
-    }
-
-    // Retrieve all Users
-    public static ArrayList<Userdto> getAllUsers() throws SQLException {
-        ResultSet rst = CrudUtil.execute("SELECT * FROM users");
-        ArrayList<Userdto> userList = new ArrayList<>();
-
-        while (rst.next()) {
-            userList.add(new Userdto(
-                    rst.getString("UserID"),
-                    rst.getString("Username"),
-                    rst.getString("Password"),
-                    rst.getTimestamp("LoginTime").toLocalDateTime(),
-                    rst.getString("EmployeeID")
-            ));
-        }
-        return userList;
-    }
-
-    // Update a User
-    public static boolean updateUser(Userdto user) throws SQLException {
-        return CrudUtil.execute(
-                "UPDATE users SET Username=?, Password=?, LoginTime=?, EmployeeID=? WHERE UserID=?",
-                user.getName(),
-                user.getPassword(),
-                user.getLoginTime(),
-                user.getEmployeeId(),
-                user.getId()
-        );
-    }
-
-    // Delete a User
-    public static boolean deleteUser(String userId) throws SQLException {
-        return CrudUtil.execute("DELETE FROM users WHERE UserID=?", userId);
-    }
+//
+//    // Save a User
+//    public static boolean saveUser(Userdto user) throws SQLException {
+//        return CrudUtil.execute(
+//                "INSERT INTO users (UserID, Username, Password, LoginTime, EmployeeID) VALUES (?, ?, ?, ?, ?)",
+//                user.getId(),
+//                user.getName(),
+//                user.getPassword(),
+//                user.getLoginTime(),
+//                user.getEmployeeId()
+//        );
+//    }
+//
+//    // Retrieve all Users
+//    public static ArrayList<Userdto> getAllUsers() throws SQLException {
+//        ResultSet rst = CrudUtil.execute("SELECT * FROM users");
+//        ArrayList<Userdto> userList = new ArrayList<>();
+//
+//        while (rst.next()) {
+//            userList.add(new Userdto(
+//                    rst.getString("UserID"),
+//                    rst.getString("Username"),
+//                    rst.getString("Password"),
+//                    rst.getTimestamp("LoginTime").toLocalDateTime(),
+//                    rst.getString("EmployeeID")
+//            ));
+//        }
+//        return userList;
+//    }
+//
+//    // Update a User
+//    public static boolean updateUser(Userdto user) throws SQLException {
+//        return CrudUtil.execute(
+//                "UPDATE users SET Username=?, Password=?, LoginTime=?, EmployeeID=? WHERE UserID=?",
+//                user.getName(),
+//                user.getPassword(),
+//                user.getLoginTime(),
+//                user.getEmployeeId(),
+//                user.getId()
+//        );
+//    }
+//
+//    // Delete a User
+//    public static boolean deleteUser(String userId) throws SQLException {
+//        return CrudUtil.execute("DELETE FROM users WHERE UserID=?", userId);
+//    }
 
     // Search for a User by ID
     public static Userdto searchUser(String userId) throws SQLException {

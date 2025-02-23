@@ -21,48 +21,48 @@ public class PaymentsModel {
         return "P001";
     }
 
-    // Save a payment
-    public static boolean savePayment(Paymentsdto payment) throws SQLException {
-        return CrudUtil.execute(
-                "INSERT INTO payments (PaymentID, PaymentMethod, Amount, PaymentDate) VALUES (?, ?, ?, ?)",
-                payment.getPaymentId(),
-                payment.getPaymentMethod(),
-                payment.getPaymentAmount(),
-                payment.getPaymentDate()
-        );
-    }
-
-    // Retrieve all payments
-    public static ArrayList<Paymentsdto> getAllPayments() throws SQLException {
-        ResultSet rst = CrudUtil.execute("SELECT * FROM payments");
-        ArrayList<Paymentsdto> paymentsList = new ArrayList<>();
-
-        while (rst.next()) {
-            paymentsList.add(new Paymentsdto(
-                    rst.getString("PaymentID"),
-                    rst.getString("PaymentMethod"),
-                    rst.getDouble("Amount"),
-                    rst.getDate("PaymentDate")
-            ));
-        }
-        return paymentsList;
-    }
-
-    // Update a payment
-    public static boolean updatePayment(Paymentsdto payment) throws SQLException {
-        return CrudUtil.execute(
-                "UPDATE payments SET PaymentMethod=?, Amount=?, PaymentDate=? WHERE PaymentID=?",
-                payment.getPaymentMethod(),
-                payment.getPaymentAmount(),
-                payment.getPaymentDate(),
-                payment.getPaymentId()
-        );
-    }
-
-    // Delete a payment
-    public static boolean deletePayment(String paymentId) throws SQLException {
-        return CrudUtil.execute("DELETE FROM payments WHERE PaymentID=?", paymentId);
-    }
+//    // Save a payment
+//    public static boolean savePayment(Paymentsdto payment) throws SQLException {
+//        return CrudUtil.execute(
+//                "INSERT INTO payments (PaymentID, PaymentMethod, Amount, PaymentDate) VALUES (?, ?, ?, ?)",
+//                payment.getPaymentId(),
+//                payment.getPaymentMethod(),
+//                payment.getPaymentAmount(),
+//                payment.getPaymentDate()
+//        );
+//    }
+//
+//    // Retrieve all payments
+//    public static ArrayList<Paymentsdto> getAllPayments() throws SQLException {
+//        ResultSet rst = CrudUtil.execute("SELECT * FROM payments");
+//        ArrayList<Paymentsdto> paymentsList = new ArrayList<>();
+//
+//        while (rst.next()) {
+//            paymentsList.add(new Paymentsdto(
+//                    rst.getString("PaymentID"),
+//                    rst.getString("PaymentMethod"),
+//                    rst.getDouble("Amount"),
+//                    rst.getDate("PaymentDate")
+//            ));
+//        }
+//        return paymentsList;
+//    }
+//
+//    // Update a payment
+//    public static boolean updatePayment(Paymentsdto payment) throws SQLException {
+//        return CrudUtil.execute(
+//                "UPDATE payments SET PaymentMethod=?, Amount=?, PaymentDate=? WHERE PaymentID=?",
+//                payment.getPaymentMethod(),
+//                payment.getPaymentAmount(),
+//                payment.getPaymentDate(),
+//                payment.getPaymentId()
+//        );
+//    }
+//
+//    // Delete a payment
+//    public static boolean deletePayment(String paymentId) throws SQLException {
+//        return CrudUtil.execute("DELETE FROM payments WHERE PaymentID=?", paymentId);
+//    }
 
     // Search for a payment by ID
     public static Paymentsdto searchPayment(String paymentId) throws SQLException {

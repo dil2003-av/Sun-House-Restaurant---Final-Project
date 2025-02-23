@@ -1,6 +1,9 @@
 package com.example.rms.controller;
 
 import com.example.rms.Tm.PurchaseTm;
+import com.example.rms.bo.BOFactory;
+import com.example.rms.bo.custom.PurchaseBO;
+import com.example.rms.bo.custom.TablesBO;
 import com.example.rms.dto.Purchasedto;
 import com.example.rms.model.PurchaseModel;
 import javafx.animation.Animation;
@@ -81,6 +84,9 @@ public class PurchaseController implements Initializable {
     @FXML
     private TextField txtTotalAmount;
 
+    public PurchaseBO purchaseBO = (PurchaseBO) BOFactory.getInstance().getBO(BOFactory.BOType.PURCHASE);
+
+
     private void showDate() {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -105,6 +111,8 @@ public class PurchaseController implements Initializable {
             refreshPage();
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
         showDate();
         setupEnterKeyListeners();
@@ -156,11 +164,11 @@ public class PurchaseController implements Initializable {
     }
 
     @FXML
-    void DeleteOA(ActionEvent event) throws SQLException {
+    void DeleteOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         String purchaseId = txtPurchaseID.getText();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this purchase?", ButtonType.YES, ButtonType.NO);
         if (alert.showAndWait().get() == ButtonType.YES) {
-            boolean isDeleted = PurchaseModel.deletePurchase(purchaseId);
+            boolean isDeleted = purchaseBO.deletePurchase(purchaseId);
             if (isDeleted) {
                 new Alert(Alert.AlertType.INFORMATION, "Purchase deleted successfully!").show();
                 refreshPage();
@@ -176,12 +184,12 @@ public class PurchaseController implements Initializable {
     }
 
     @FXML
-    void ResetOA(ActionEvent event) throws SQLException {
+    void ResetOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
     @FXML
-    void SaveOA(ActionEvent event) throws SQLException {
+    void SaveOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         Purchasedto purchase = new Purchasedto(
                 txtPurchaseID.getText(),
                 txtSupplierID.getText(),
@@ -189,7 +197,7 @@ public class PurchaseController implements Initializable {
                 Date.valueOf(txtPuirchaseDate.getText())
         );
 
-        boolean isSaved = PurchaseModel.savePurchase(purchase);
+        boolean isSaved = purchaseBO.savePurchase(purchase);
         if (isSaved) {
             new Alert(Alert.AlertType.INFORMATION, "Purchase saved successfully!").show();
             refreshPage();
@@ -199,7 +207,7 @@ public class PurchaseController implements Initializable {
     }
 
     @FXML
-    void UpdateOA(ActionEvent event) throws SQLException {
+    void UpdateOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         Purchasedto purchase = new Purchasedto(
                 txtPurchaseID.getText(),
                 txtSupplierID.getText(),
@@ -207,7 +215,7 @@ public class PurchaseController implements Initializable {
                 Date.valueOf(txtPuirchaseDate.getText())
         );
 
-        boolean isUpdated = PurchaseModel.updatePurchase(purchase);
+        boolean isUpdated = purchaseBO.updatePurchase(purchase);
         if (isUpdated) {
             new Alert(Alert.AlertType.INFORMATION, "Purchase updated successfully!").show();
             refreshPage();
@@ -231,7 +239,7 @@ public class PurchaseController implements Initializable {
         }
     }
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         refreshTable();
         txtPurchaseID.setText(PurchaseModel.getNextPurchaseId());
         txtSupplierID.clear();
@@ -265,7 +273,7 @@ public class PurchaseController implements Initializable {
     private Button btnSearchPurchase; // Button to trigger search action
 
     @FXML
-    void searchOnAction(ActionEvent event) throws SQLException {
+    void searchOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String purchaseId = txtSearchPurchaseID.getText(); // Get the Purchase ID entered in the text field
 
         // Reset border color for the search field

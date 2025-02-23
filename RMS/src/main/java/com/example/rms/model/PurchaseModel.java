@@ -20,17 +20,17 @@ public class PurchaseModel {
         }
         return "P001";
     }
-
-    // Save a purchase
-    public static boolean savePurchase(Purchasedto purchase) throws SQLException {
-        return CrudUtil.execute(
-                "INSERT INTO purchases VALUES (?, ?, ?, ?)",
-                purchase.getPurchaseId(),
-                purchase.getSupplierId(),
-                purchase.getPurchaseTotalAmount(),
-                purchase.getPurchaseDate()
-        );
-    }
+//
+//    // Save a purchase
+//    public static boolean savePurchase(Purchasedto purchase) throws SQLException {
+//        return CrudUtil.execute(
+//                "INSERT INTO purchases VALUES (?, ?, ?, ?)",
+//                purchase.getPurchaseId(),
+//                purchase.getSupplierId(),
+//                purchase.getPurchaseTotalAmount(),
+//                purchase.getPurchaseDate()
+//        );
+//    }
 
     // Retrieve all purchases
     public static ArrayList<Purchasedto> getAllPurchases() throws SQLException {
@@ -47,22 +47,22 @@ public class PurchaseModel {
         }
         return purchasesList;
     }
-
-    // Update a purchase
-    public static boolean updatePurchase(Purchasedto purchase) throws SQLException {
-        return CrudUtil.execute(
-                "UPDATE purchases SET SupplierID=?, TotalAmount=?, PurchaseDate=? WHERE PurchaseID=?",
-                purchase.getSupplierId(),
-                purchase.getPurchaseTotalAmount(),
-                purchase.getPurchaseDate(),
-                purchase.getPurchaseId()
-        );
-    }
-
-    // Delete a purchase
-    public static boolean deletePurchase(String purchaseId) throws SQLException {
-        return CrudUtil.execute("DELETE FROM purchases WHERE PurchaseID=?", purchaseId);
-    }
+//
+//    // Update a purchase
+//    public static boolean updatePurchase(Purchasedto purchase) throws SQLException {
+//        return CrudUtil.execute(
+//                "UPDATE purchases SET SupplierID=?, TotalAmount=?, PurchaseDate=? WHERE PurchaseID=?",
+//                purchase.getSupplierId(),
+//                purchase.getPurchaseTotalAmount(),
+//                purchase.getPurchaseDate(),
+//                purchase.getPurchaseId()
+//        );
+//    }
+//
+//    // Delete a purchase
+//    public static boolean deletePurchase(String purchaseId) throws SQLException {
+//        return CrudUtil.execute("DELETE FROM purchases WHERE PurchaseID=?", purchaseId);
+//    }
 
     // Search for a purchase by ID
     public static Purchasedto searchPurchase(String purchaseId) throws SQLException {

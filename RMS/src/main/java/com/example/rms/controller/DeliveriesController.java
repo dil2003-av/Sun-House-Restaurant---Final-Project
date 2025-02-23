@@ -1,6 +1,8 @@
 package com.example.rms.controller;
 
 import com.example.rms.Tm.DeliveriesTm;
+import com.example.rms.bo.BOFactory;
+import com.example.rms.bo.custom.DeliveriesBO;
 import com.example.rms.dto.Deliveriesdto;
 import com.example.rms.model.DeliveriesModel;
 import javafx.animation.Animation;
@@ -84,6 +86,9 @@ public class DeliveriesController implements Initializable {
     @FXML
     private Button updateid;
 
+    //DeliveriesBO deliveriesBO = (DeliveriesBO) BOFactory.getInstance().getBO(BOFactory.BOType.DELIVERY);
+
+
     private void showDate() {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -106,7 +111,7 @@ public class DeliveriesController implements Initializable {
         try {
             txtDeliverID.setText(DeliveriesModel.getNextDeliveryId());
             refreshPage();
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
         showDate();
@@ -153,9 +158,12 @@ public class DeliveriesController implements Initializable {
 
 
     @FXML
-    void DeleteOA(ActionEvent event) throws SQLException {
+    void DeleteOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         String deliveryId = txtDeliverID.getText();
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this delivery?", ButtonType.YES, ButtonType.NO);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                "Are you sure you want to delete this delivery?",
+                ButtonType.YES, ButtonType.NO);
+
         if (alert.showAndWait().get() == ButtonType.YES) {
             boolean isDeleted = DeliveriesModel.deleteDelivery(deliveryId);
             if (isDeleted) {
@@ -166,6 +174,7 @@ public class DeliveriesController implements Initializable {
             }
         }
     }
+
 
     @FXML
     void OnClickTable(MouseEvent event) {
@@ -184,12 +193,12 @@ public class DeliveriesController implements Initializable {
     }
 
     @FXML
-    void ResetOA(ActionEvent event) throws SQLException {
+    void ResetOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
     @FXML
-    void SaveOA(ActionEvent event) throws SQLException {
+    void SaveOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         String deliveryId = txtDeliverID.getText();
         String orderId = txtOrderID.getText();
         String deliveryDate = txtDeliveryDate.getText();
@@ -243,7 +252,7 @@ public class DeliveriesController implements Initializable {
                     deliveryStatus,
                     deliveryAddress
             );
-
+            DeliveriesModel.saveDelivery(new Deliveriesdto(deliveryId,orderId,Date.valueOf(deliveryDate),deliveryStatus, deliveryAddress));
             boolean isSaved = DeliveriesModel.saveDelivery(delivery);
 
             if (isSaved) {
@@ -264,7 +273,7 @@ public class DeliveriesController implements Initializable {
     }
 
     @FXML
-    void updateOA(ActionEvent event) throws SQLException {
+    void updateOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         Deliveriesdto delivery = new Deliveriesdto(
                 txtDeliverID.getText(),
                 txtOrderID.getText(),
@@ -273,6 +282,7 @@ public class DeliveriesController implements Initializable {
                 txtDeliveryAddress.getText()
         );
 
+        DeliveriesModel.updateDelivery(new Deliveriesdto(delivery.getDeliveryId(), delivery.getOrderId(), delivery.getDeliveryDate(), delivery.getDeliveryAddress(), delivery.getDeliveryAddress()));
         boolean isUpdated = DeliveriesModel.updateDelivery(delivery);
 
         if (isUpdated) {
@@ -283,7 +293,7 @@ public class DeliveriesController implements Initializable {
         }
     }
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         refreshTable();
         txtDeliverID.setText(DeliveriesModel.getNextDeliveryId());
         txtOrderID.clear();
@@ -296,7 +306,7 @@ public class DeliveriesController implements Initializable {
         updateid.setDisable(true);
     }
 
-    private void refreshTable() throws SQLException {
+    private void refreshTable() throws SQLException, ClassNotFoundException {
         ArrayList<Deliveriesdto> deliveries = DeliveriesModel.getAllDeliveries();
         ObservableList<DeliveriesTm> deliveryTMs = FXCollections.observableArrayList();
 
@@ -319,7 +329,7 @@ public class DeliveriesController implements Initializable {
     private Button btnSearchDelivery; // Button to trigger search action
 
     @FXML
-    void searchOnAction(ActionEvent event) throws SQLException {
+    void searchOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String deliveryId = txtSearchDeliveryId.getText(); // Get the Delivery ID entered in the search field
 
         // Reset border color for the search field

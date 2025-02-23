@@ -1,6 +1,9 @@
 package com.example.rms.controller;
 
 import com.example.rms.Tm.TablesTm;
+import com.example.rms.bo.BOFactory;
+import com.example.rms.bo.custom.OrderItemBO;
+import com.example.rms.bo.custom.TablesBO;
 import com.example.rms.dto.Tablesdto;
 import com.example.rms.model.TablesModel;
 import javafx.collections.FXCollections;
@@ -80,6 +83,9 @@ public class TablesController implements Initializable {
     @FXML
     private TextField txtTableNumber;
 
+    public TablesBO  tablesBO = (TablesBO) BOFactory.getInstance().getBO(BOFactory.BOType.TABLES);
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colTableId.setCellValueFactory(new PropertyValueFactory<>("tableId"));
@@ -89,9 +95,11 @@ public class TablesController implements Initializable {
         colStatus.setCellValueFactory(new PropertyValueFactory<>("tableStatus"));
 
         try {
-            txtTableId.setText(TablesModel.getNextTableId());
+            txtTableId.setText(tablesBO.getNextTableId());
             refreshPage();
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
@@ -143,11 +151,11 @@ public class TablesController implements Initializable {
     }
 
     @FXML
-    void DeleteOA(ActionEvent event) throws SQLException {
+    void DeleteOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         String tableId = txtTableId.getText();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this table?", ButtonType.YES, ButtonType.NO);
         if (alert.showAndWait().get() == ButtonType.YES) {
-            boolean isDeleted = TablesModel.deleteTable(tableId);
+            boolean isDeleted = tablesBO.deleteTable(tableId);
             if (isDeleted) {
                 new Alert(Alert.AlertType.INFORMATION, "Table deleted successfully!").show();
                 refreshPage();
@@ -163,12 +171,12 @@ public class TablesController implements Initializable {
     }
 
     @FXML
-    void ResetOA(ActionEvent event) throws SQLException {
+    void ResetOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
     @FXML
-    void SaveOA(ActionEvent event) throws SQLException {
+    void SaveOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         Tablesdto table = new Tablesdto(
                 txtTableId.getText(),
                 txtTableNumber.getText(),
@@ -177,7 +185,7 @@ public class TablesController implements Initializable {
                 txtStatus.getText()
         );
 
-        boolean isSaved = TablesModel.saveTable(table);
+        boolean isSaved = tablesBO.saveTable(table);
 
         if (isSaved) {
             new Alert(Alert.AlertType.INFORMATION, "Table saved successfully!").show();
@@ -188,7 +196,7 @@ public class TablesController implements Initializable {
     }
 
     @FXML
-    void UpdateOA(ActionEvent event) throws SQLException {
+    void UpdateOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         Tablesdto table = new Tablesdto(
                 txtTableId.getText(),
                 txtTableNumber.getText(),
@@ -197,7 +205,7 @@ public class TablesController implements Initializable {
                 txtStatus.getText()
         );
 
-        boolean isUpdated = TablesModel.updateTable(table);
+        boolean isUpdated = tablesBO.updateTable(table);
 
         if (isUpdated) {
             new Alert(Alert.AlertType.INFORMATION, "Table updated successfully!").show();
@@ -223,9 +231,9 @@ public class TablesController implements Initializable {
         }
     }
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         refreshTable();
-        txtTableId.setText(TablesModel.getNextTableId());
+        txtTableId.setText(tablesBO.getNextTableId());
         txtTableNumber.clear();
         txtCapacity.clear();
         txtLocation.clear();
@@ -236,8 +244,8 @@ public class TablesController implements Initializable {
         btnUpdate.setDisable(true);
     }
 
-    private void refreshTable() throws SQLException {
-        ArrayList<Tablesdto> tables = TablesModel.getAllTables();
+    private void refreshTable() throws SQLException, ClassNotFoundException {
+        ArrayList<Tablesdto> tables = tablesBO.getAllTables();
         ObservableList<TablesTm> tableTMs = FXCollections.observableArrayList();
 
         for (Tablesdto table : tables) {
@@ -259,7 +267,7 @@ public class TablesController implements Initializable {
     private Button btnSearch; // Button to trigger search action
 
     @FXML
-    void searchOnAction(ActionEvent event) throws SQLException {
+    void searchOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String tableId = txtSearchTableId.getText(); // Get the Table ID entered in the search field
 
         if (tableId.isEmpty()) {

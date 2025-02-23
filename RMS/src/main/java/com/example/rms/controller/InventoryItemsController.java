@@ -1,6 +1,8 @@
 package com.example.rms.controller;
 
 import com.example.rms.Tm.InventoryItemsTm;
+import com.example.rms.bo.BOFactory;
+import com.example.rms.bo.custom.InventoryItemsBO;
 import com.example.rms.dto.InventoryItemsdto;
 import com.example.rms.dto.Paymentsdto;
 import com.example.rms.model.InventoryItemsModel;
@@ -79,7 +81,8 @@ public class InventoryItemsController {
     @FXML
     private TextField txtUnit;
 
-    
+    public InventoryItemsBO inventoryItemsBO = (InventoryItemsBO) BOFactory.getInstance().getBO(BOFactory.BOType.INVENTORY_ITEM);
+
 
     @FXML
     public void initialize() {
@@ -90,9 +93,9 @@ public class InventoryItemsController {
         colUnit.setCellValueFactory(new PropertyValueFactory<>("inventoryUnit"));
 
         try {
-            txtInventoryItemId.setText(InventoryItemsModel.getNextInventoryItemId());
+            txtInventoryItemId.setText(inventoryItemsBO.getNextInventoryItemId());
             refreshPage();
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         setupEnterKeyListeners();
@@ -105,11 +108,11 @@ public class InventoryItemsController {
     }
 
     @FXML
-    void DeleteOA(ActionEvent event) throws SQLException {
+    void DeleteOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         String itemId = txtInventoryItemId.getText();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this item?", ButtonType.YES, ButtonType.NO);
         if (alert.showAndWait().get() == ButtonType.YES) {
-            boolean isDeleted = InventoryItemsModel.deleteInventoryItem(itemId);
+            boolean isDeleted = inventoryItemsBO.deleteInventoryItem(itemId);
             if (isDeleted) {
                 new Alert(Alert.AlertType.INFORMATION, "Item deleted successfully!").show();
                 refreshPage();
@@ -125,12 +128,12 @@ public class InventoryItemsController {
     }
 
     @FXML
-    void ResetOA(ActionEvent event) throws SQLException {
+    void ResetOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
     @FXML
-    void SaveOA(ActionEvent event) throws SQLException {
+    void SaveOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         InventoryItemsdto item = new InventoryItemsdto(
                 txtInventoryItemId.getText(),
                 txtName.getText(),
@@ -139,7 +142,7 @@ public class InventoryItemsController {
                 txtUnit.getText()
         );
 
-        boolean isSaved = InventoryItemsModel.saveInventoryItem(item);
+        boolean isSaved = inventoryItemsBO.saveInventoryItem(item);
 
         if (isSaved) {
             new Alert(Alert.AlertType.INFORMATION, "Item saved successfully!").show();
@@ -150,7 +153,7 @@ public class InventoryItemsController {
     }
 
     @FXML
-    void UpdateOA(ActionEvent event) throws SQLException {
+    void UpdateOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         InventoryItemsdto item = new InventoryItemsdto(
                 txtInventoryItemId.getText(),
                 txtName.getText(),
@@ -159,7 +162,7 @@ public class InventoryItemsController {
                 txtUnit.getText()
         );
 
-        boolean isUpdated = InventoryItemsModel.updateInventoryItem(item);
+        boolean isUpdated = inventoryItemsBO.updateInventoryItem(item);
 
         if (isUpdated) {
             new Alert(Alert.AlertType.INFORMATION, "Item updated successfully!").show();
@@ -185,9 +188,9 @@ public class InventoryItemsController {
         }
     }
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         refreshTable();
-        txtInventoryItemId.setText(InventoryItemsModel.getNextInventoryItemId());
+        txtInventoryItemId.setText(inventoryItemsBO.getNextInventoryItemId());
         txtName.clear();
         txtDescription.clear();
         txtQuantity.clear();
@@ -198,8 +201,8 @@ public class InventoryItemsController {
         btnUpdate.setDisable(true);
     }
 
-    private void refreshTable() throws SQLException {
-        ArrayList<InventoryItemsdto> items = InventoryItemsModel.getAllInventoryItems();
+    private void refreshTable() throws SQLException, ClassNotFoundException {
+        ArrayList<InventoryItemsdto> items = inventoryItemsBO.getAllInventoryItems();
         ObservableList<InventoryItemsTm> itemTMs = FXCollections.observableArrayList();
 
         for (InventoryItemsdto item : items) {
@@ -221,7 +224,7 @@ public class InventoryItemsController {
     private Button btnSearchInventory;
 
     @FXML
-    void searchOnAction(ActionEvent event) throws SQLException {
+    void searchOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String inventoryItemId = txtSearchInventoryId.getText();
 
         // Reset border color for the search field

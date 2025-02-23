@@ -1,6 +1,9 @@
 package com.example.rms.controller;
 
 import com.example.rms.Tm.PaymentsTm;
+import com.example.rms.bo.BOFactory;
+import com.example.rms.bo.custom.PaymentBO;
+import com.example.rms.bo.custom.PurchaseItemBO;
 import com.example.rms.db.DBConnection;
 import com.example.rms.dto.Paymentsdto;
 import com.example.rms.model.PaymentsModel;
@@ -89,6 +92,9 @@ public class PaymentsController implements Initializable {
     @FXML
     private TextField txtPaymentMethod;
 
+    public PaymentBO paymentBO = (PaymentBO) BOFactory.getInstance().getBO(BOFactory.BOType.PAYMENTS);
+
+
 //    @FXML
 //    void initialize() throws SQLException {
 //       //initializeTable();
@@ -124,9 +130,11 @@ public class PaymentsController implements Initializable {
         colPaymentDate.setCellValueFactory(new PropertyValueFactory<>("paymentDate"));
 
         try {
-            txtPaymentId.setText(PaymentsModel.getNextPaymentId());
+            txtPaymentId.setText(paymentBO.getNextPaymentId());
             refreshPage();
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
         showDate();
@@ -179,11 +187,11 @@ public class PaymentsController implements Initializable {
         PaymentsAPid.getChildren().add(FXMLLoader.load(getClass().getResource("/view/HomePage.fxml")));
     }
     @FXML
-    void DeleteOA(ActionEvent event) throws SQLException {
+    void DeleteOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         String paymentId = txtPaymentId.getText();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this payment?", ButtonType.YES, ButtonType.NO);
         if (alert.showAndWait().get() == ButtonType.YES) {
-            boolean isDeleted = PaymentsModel.deletePayment(paymentId);
+            boolean isDeleted = paymentBO.deletePayment(paymentId);
             if (isDeleted) {
                 new Alert(Alert.AlertType.INFORMATION, "Payment deleted successfully!").show();
                 refreshPage();
@@ -221,12 +229,12 @@ public class PaymentsController implements Initializable {
 
 
     @FXML
-    void ResetOA(ActionEvent event) throws SQLException {
+    void ResetOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         refreshPage();
     }
 
     @FXML
-    void SaveOA(ActionEvent event) throws SQLException {
+    void SaveOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         Paymentsdto payment = new Paymentsdto(
                 txtPaymentId.getText(),
                 txtPaymentMethod.getText(),
@@ -234,7 +242,7 @@ public class PaymentsController implements Initializable {
                 Date.valueOf(txtPaymentDate.getText())
         );
 
-        boolean isSaved = PaymentsModel.savePayment(payment);
+        boolean isSaved = paymentBO.savePayment(payment);
 
         if (isSaved) {
             new Alert(Alert.AlertType.INFORMATION, "Payment saved successfully!").show();
@@ -245,7 +253,7 @@ public class PaymentsController implements Initializable {
     }
 
     @FXML
-    void UpdateOA(ActionEvent event) throws SQLException {
+    void UpdateOA(ActionEvent event) throws SQLException, ClassNotFoundException {
         Paymentsdto payment = new Paymentsdto(
                 txtPaymentId.getText(),
                 txtPaymentMethod.getText(),
@@ -253,7 +261,7 @@ public class PaymentsController implements Initializable {
                 Date.valueOf(txtPaymentDate.getText())
         );
 
-        boolean isUpdated = PaymentsModel.updatePayment(payment);
+        boolean isUpdated = paymentBO.updatePayment(payment);
 
         if (isUpdated) {
             new Alert(Alert.AlertType.INFORMATION, "Payment updated successfully!").show();
@@ -278,9 +286,9 @@ public class PaymentsController implements Initializable {
         }
     }
 
-    private void refreshPage() throws SQLException {
+    private void refreshPage() throws SQLException, ClassNotFoundException {
         refreshTable();
-        txtPaymentId.setText(PaymentsModel.getNextPaymentId());
+        txtPaymentId.setText(paymentBO.getNextPaymentId());
         txtPaymentMethod.clear();
         txtAmount.clear();
         txtPaymentDate.clear();
@@ -290,8 +298,8 @@ public class PaymentsController implements Initializable {
         btnUpdate.setDisable(true);
     }
 
-    private void refreshTable() throws SQLException {
-        ArrayList<Paymentsdto> payments = PaymentsModel.getAllPayments();
+    private void refreshTable() throws SQLException, ClassNotFoundException {
+        ArrayList<Paymentsdto> payments = paymentBO.getAllPayments();
         ObservableList<PaymentsTm> paymentTMs = FXCollections.observableArrayList();
 
         for (Paymentsdto payment : payments) {
@@ -311,7 +319,7 @@ public class PaymentsController implements Initializable {
     private Button btnSearchPayment; // Button to trigger search action
 
     @FXML
-    void searchOnAction(ActionEvent event) throws SQLException {
+    void searchOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String paymentId = txtSearchPaymentId.getText(); // Get the Payment ID entered in the text field
 
         // Reset border color for the search field
